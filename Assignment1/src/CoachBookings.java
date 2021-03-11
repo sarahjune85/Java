@@ -13,7 +13,7 @@ public class CoachBookings {
 		System.out.println("X: Exit");
 	}
 	
-	// GIT TEST COMMENT
+	// GIT TEST COMMENT - TEST 2
 	
 	public void runMenu() {
 		String choice;
