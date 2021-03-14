@@ -76,6 +76,21 @@ public class CoachBookings {
 
 	} 
 	
+	public void displayReceipt() {
+	/*	
+		Receipt 
+		******* 
+		Destination : xxxxxxxxxxxxx
+		Number of seats booked : x 
+		 xx * Standard @ $xx.xx = $ xx.xx 
+		 xx * Pensioner @ $xx.xx = $ xx.xx 
+		 xx * Frequent @ $xx.xx = $ xx.xx 
+		 ------ 
+		 Total : $xxx.xx 
+		 
+		*/
+	}
+	
 	public static void main(String[] args) {
 		CoachBookings app = new CoachBookings();
 	}
