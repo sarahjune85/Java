@@ -36,7 +36,7 @@ public class CoachBookings {
 		frequent = Double.parseDouble(sc.nextLine());
 		
 		sc.close();
-		
+		// Maybe some more space here
 		System.out.println("+------- Your inputs -------+");
 		System.out.println("Total seats available on coach: " + seats);
 		System.out.printf("Standard seat price: %.2f\n", standard);
