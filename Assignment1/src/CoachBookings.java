@@ -1,8 +1,8 @@
 import java.util.Scanner;
 
 public class CoachBookings {
-
-	public static void main(String[] args) {
+	
+	public CoachBookings() {
 
 		Scanner sc = new Scanner(System.in);
 		String destination;
@@ -42,23 +42,27 @@ public class CoachBookings {
 		System.out.printf("Standard seat price: %.2f\n", standard);
 		System.out.printf("Pensioner seat price: %.2f\n", pensioner);
 		System.out.printf("Frequent seat price: %.2f\n", frequent);
+		
+		runMenu();
 	}
 
-/* switch statement for menu selections
+
 	public void runMenu() {
 		String choice;
 		do {
 
+			Scanner sc = new Scanner(System.in);
+			System.out.println("Make a selection: ");
 			choice = sc.nextLine();
 			switch (choice) {
 			case "P":
-				System.out.println("Buy a ticket");
+				System.out.println("Ticket purchased");
 				break;
 			case "R":
-				System.out.println("Want a refund?");
+				System.out.println("Refund Issued");
 				break;
 			case "D":
-				System.out.println("Displaying seats");
+				System.out.println("Displaying seats: ");
 				break;
 			case "X":
 				System.out.println("BYEEEEE");
@@ -70,6 +74,10 @@ public class CoachBookings {
 			}
 		} while (!choice.equals("X"));
 
-	} */
+	} 
+	
+	public static void main(String[] args) {
+		CoachBookings app = new CoachBookings();
+	}
 
 }
