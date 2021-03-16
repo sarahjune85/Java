@@ -23,8 +23,9 @@ public class CoachBookings {
 		System.out.println("Travelling to: " + destination);
 		System.out.print("Enter # of rows of seats: ");
 		seatRows = Integer.parseInt(sc.nextLine());
-		int seats = seatRows * 4;
-		int[] totalSeats = new int[seats];
+		int totalSeats = seatRows * 4;
+		// Seats should be a charArray - S, P, F - then store $ amount across the seat.
+		char[] seats = new char[totalSeats];
 				
 		System.out.print("Enter the price of a standard seat: ");
 		standard = Double.parseDouble(sc.nextLine());
@@ -42,6 +43,8 @@ public class CoachBookings {
 		System.out.printf("Standard seat price: %.2f\n", standard);
 		System.out.printf("Pensioner seat price: %.2f\n", pensioner);
 		System.out.printf("Frequent seat price: %.2f\n", frequent);
+		
+
 		
 		runMenu();
 	}
