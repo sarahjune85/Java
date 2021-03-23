@@ -2,13 +2,19 @@ import java.util.*;
 
 class Coach {
 	private String destination;
+	
 	private double standard;
 	private double pensioner;
 	private double frequent;
+	private double totalBalance; //
+	
+	private int purchasedSeats = 0;
+	private int purchasedStandard = 0;
+	private int purchasedPensioner = 0;
+	private int purchasedFrequent = 0;	
+	
 	private int totalSeats;
 	private char[] seats;
-	private double totalBalance;
-	double grandTotal;
 
 	public Coach() {
 
@@ -22,7 +28,7 @@ class Coach {
 		this.totalSeats = seatRows * 4;
 	}
 
-	public int getAllSeats() {
+	public int getTotalSeats() {
 		return totalSeats;
 	}
 
@@ -36,7 +42,31 @@ class Coach {
 			Scanner in = new Scanner(System.in);
 			data = Integer.parseInt(in.nextLine());
 		}
-		this.seats[data - 1] = value;		
+		this.seats[data - 1] = value;
+	}
+
+	// Refund seat method - takes an int value for a specific seat, checks whether
+	// it is an S, P or F and refunds from there:
+	public void refundSeat(int data) {
+		char value;
+		if ((this.seats[data - 1] == ---fsdfsd) && ((value == 's') || (value == 'S'))) {
+			System.out.println("Refunding Standard seat.");
+			this.seats[data -1] = '-';
+			this.purchasedStandard--;
+			this.purchasedSeats--;
+		} else if ((this.seats[data - 1] == value) && ((value == 'p') || (value == 'P'))) {
+			System.out.println("Refunding Pensioner seat.");
+			this.seats[data -1] = '-';
+			this.purchasedPensioner--;
+			this.purchasedSeats--;
+		} else if ((this.seats[data - 1] == value) && ((value == 'f') || (value == 'F'))) {
+			System.out.println("Refunding Frequent seat.");
+			this.seats[data -1] = '-';
+			this.purchasedFrequent--;
+			this.purchasedSeats--;
+		} else {
+			System.out.println("Seat not booked, no refund applicable.");
+		}	
 	}
 
 	public void fillSeats() {
@@ -59,7 +89,15 @@ class Coach {
 	public double getFrequent() {
 		return frequent;
 	}
-
+	
+	public int getPurchasedSeats() {
+		return purchasedSeats;
+	}
+	
+	public void setPurchasedSeats(int purchasedSeats) {
+		this.purchasedSeats = purchasedSeats;
+	}
+	
 	public void setTotalBalance(double totalBalance) {
 		this.totalBalance = totalBalance;
 	}
@@ -74,6 +112,40 @@ class Coach {
 
 	public void setFrequent(double frequent) {
 		this.frequent = frequent;
+	}	
+
+	public int getPurchasedStandard() {
+		return purchasedStandard;
 	}
+
+	public void setPurchasedStandard(int purchasedStandard) {
+		this.purchasedStandard = purchasedStandard;
+	}
+
+
+	public int getPurchasedPensioner() {
+		return purchasedPensioner;
+	}
+
+
+	public void setPurchasedPensioner(int purchasedPensioner) {
+		this.purchasedPensioner = purchasedPensioner;
+	}
+
+
+	public int getPurchasedFrequent() {
+		return purchasedFrequent;
+	}
+
+
+	public void setPurchasedFrequent(int purchasedFrequent) {
+		this.purchasedFrequent = purchasedFrequent;
+	}
+
+
+	public double getTotalBalance() {
+		return totalBalance;
+	}
+
 
 }
