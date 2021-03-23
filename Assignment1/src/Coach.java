@@ -5,63 +5,75 @@ class Coach {
 	private double standard;
 	private double pensioner;
 	private double frequent;
-	private double totalBalance = 0;
 	private int totalSeats;
-	private char[] seats = new char[totalSeats];
+	private char[] seats;
+	private double totalBalance;
+	double grandTotal;
 
-	public Coach(String destination, double standard, double pensioner, double frequent) {
+	public Coach() {
+
+	}
+
+	public void setDestination(String destination) {
 		this.destination = destination;
-		this.standard = standard;
-		this.pensioner = pensioner;
-		this.frequent = frequent;
 	}
 
-	public void buyStandard(int number) {
-		this.totalBalance = (standard * number) + totalBalance;
+	public void setTotalSeats(int seatRows) {
+		this.totalSeats = seatRows * 4;
 	}
 
-	public void buyPensioner(int number) {
-		this.totalBalance = (pensioner * number) + totalBalance;
+	public int getAllSeats() {
+		return totalSeats;
 	}
 
-	public void buyFrequent(int number) {
-		this.totalBalance = (frequent * number) + totalBalance;
+	public char[] getSeats() {
+		return seats;
 	}
 
-	// Get total bus ticket tally
+	public void setSeat(int data, char value) {
+		while ((this.seats[data - 1] == 'S') || (this.seats[data - 1] == 'P') || (this.seats[data - 1] == 'F')) {
+			System.out.println("Seat already booked - please choose another: ");
+			Scanner in = new Scanner(System.in);
+			data = Integer.parseInt(in.nextLine());
+		}
+		this.seats[data - 1] = value;		
+	}
+
+	public void fillSeats() {
+		seats = new char[totalSeats];
+		Arrays.fill(seats, '-');
+	}
+
 	public double getBalance() {
 		return totalBalance;
+	}
+
+	public double getStandard() {
+		return standard;
+	}
+
+	public double getPensioner() {
+		return pensioner;
+	}
+
+	public double getFrequent() {
+		return frequent;
+	}
+
+	public void setTotalBalance(double totalBalance) {
+		this.totalBalance = totalBalance;
+	}
+
+	public void setStandard(double standard) {
+		this.standard = standard;
 	}
 
 	public void setPensioner(double pensioner) {
 		this.pensioner = pensioner;
 	}
 
-	// Get/Set seats:
-	public void setSeats(int seats) {
-		this.totalSeats = seats;
-	}
-
-	public void printDetails() {
-		System.out.println();
-		System.out.printf("+--------------Coach to %s-------------+\n", destination);
-		System.out.printf("%-10s%d\n", "Total seats: ", totalSeats);
-		System.out.printf("%-10s$%.2f\n", "Standard Ticket: ", standard);
-		System.out.printf("%-10s$%.2f\n", "Pensioner: ", pensioner);
-		System.out.printf("%-10s$%.2f\n", "Frequent: ", frequent);
-		System.out.println();
-	}
-
-	public void displayReceipt() {
-		System.out.println("Receipt");
-		System.out.println("*******");
-		System.out.printf("Destination: %s", destination);
-		System.out.println("Number of seats booked : x ");
-		System.out.printf("xx * Standard @ $xx.xx = $ xx.xx ");
-		System.out.printf("xx * Pensioner @ $xx.xx = $ xx.xx ");
-		System.out.printf("xx * Frequent @ $xx.xx = $ xx.xx ");
-		System.out.println(" ------ ");
-		System.out.println("Total : $xxx.xx ");
+	public void setFrequent(double frequent) {
+		this.frequent = frequent;
 	}
 
 }
