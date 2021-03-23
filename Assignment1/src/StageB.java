@@ -231,13 +231,13 @@ public class StageB {
 	public void displaySeats(char[] array) {
 		System.out.println();
 		System.out.println("Seat allocation: ");
-		int j = 1;
-		for (int i = 0; i < coach.getSeats().length; i++)
-//		for (int row = 1; row <= seatRows; row++) {
-//			for (int col = 1; col <= 4; col++) {
-			System.out.printf("%3d %-2s", i + 1, (coach.getSeats()[i]));
-//				j++;
-//			}
+		int n = 4; 
+		System.out.println("Printing " + (n) + " x " + (n) + " board...");
+		for (int i = 0; i < coach.getSeats().length; i++) {
+			if ((i % n) == 0)
+				System.out.println();
+			System.out.printf("%2d %-2s", (i + 1), coach.getSeats()[i]);
+		}
 		System.out.println();
 		System.out.println();
 		mainMenu();
