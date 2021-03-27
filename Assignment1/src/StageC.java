@@ -288,7 +288,6 @@ public class StageC {
 				freqArrayToString += (i + 1) + ", ";
 			}
 		}
-
 		// Tickets purchase menu display:
 		System.out.println("Seats available: " + (coach.getSeats().length - coach.getPurchasedSeats()));
 		System.out.println(" ------ ");
@@ -389,7 +388,7 @@ public class StageC {
 	public void displaySeats(char[] array) {
 		System.out.println();
 		System.out.println(" ----------------------------------------------- ");
-		System.out.printf("%32s\n", "Seat Allocation");
+		System.out.printf("%28s %s\n", "Seat Allocation: ", coach.getDestination());
 		System.out.println(" ----------------------------------------------- ");
 		System.out.println(" B = Booked\n - = Vacant");
 		for (int i = 0; i < coach.getSeats().length; i++) {

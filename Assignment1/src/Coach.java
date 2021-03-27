@@ -15,16 +15,16 @@ class Coach {
 	public void setDestination(String destination) {
 		this.destination = destination;
 	}
+	
+	public String getDestination() {
+		return destination;
+	}
 
 	// Sets the total number of coach seats depending on the number of rows entered:
 	public void setTotalSeats(int seatRows) {
 		this.totalSeats = seatRows * 4;
 	}
 
-//	public int getTotalSeats() {
-//		return totalSeats;
-//	} defunct, using seats[].length
-	
 	// Returns seats array values:
 	public char[] getSeats() {
 		return seats;
@@ -119,5 +119,4 @@ class Coach {
 	public void setPurchasedSeats(int purchasedSeats) {
 		this.purchasedSeats = purchasedSeats;
 	}
-
 }
