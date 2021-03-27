@@ -2,23 +2,19 @@ import java.util.*;
 
 class Coach {
 	private String destination;
-	
+
 	private double standard;
 	private double pensioner;
 	private double frequent;
 	private double totalBalance; //
-	
+
 	private int purchasedSeats = 0;
 	private int purchasedStandard = 0;
 	private int purchasedPensioner = 0;
-	private int purchasedFrequent = 0;	
-	
+	private int purchasedFrequent = 0;
+
 	private int totalSeats;
 	private char[] seats;
-
-	public Coach() {
-
-	}
 
 	public void setDestination(String destination) {
 		this.destination = destination;
@@ -35,38 +31,30 @@ class Coach {
 	public char[] getSeats() {
 		return seats;
 	}
-
-	public void setSeat(int data, char value) {
-		while ((this.seats[data - 1] == 'S') || (this.seats[data - 1] == 'P') || (this.seats[data - 1] == 'F')) {
-			System.out.println("Seat already booked - please choose another: ");
-			Scanner in = new Scanner(System.in);
-			data = Integer.parseInt(in.nextLine());
-		}
-		this.seats[data - 1] = value;
-	}
+	
 
 	// Refund seat method - takes an int value for a specific seat, checks whether
 	// it is an S, P or F and refunds from there:
-	public void refundSeat(int data) {
-		char value;
-		if ((this.seats[data - 1] == ---fsdfsd) && ((value == 's') || (value == 'S'))) {
+	public void refundSeat(int seatNum) {		
+		if ((this.seats[seatNum - 1] == 's') || ((this.seats[seatNum - 1] == 'S'))) {
 			System.out.println("Refunding Standard seat.");
-			this.seats[data -1] = '-';
+			this.seats[seatNum -1] = '-';
 			this.purchasedStandard--;
 			this.purchasedSeats--;
-		} else if ((this.seats[data - 1] == value) && ((value == 'p') || (value == 'P'))) {
+		} else if ((this.seats[seatNum - 1] == 'p') || ((this.seats[seatNum - 1] == 'P'))) {
 			System.out.println("Refunding Pensioner seat.");
-			this.seats[data -1] = '-';
+			this.seats[seatNum -1] = '-';
 			this.purchasedPensioner--;
 			this.purchasedSeats--;
-		} else if ((this.seats[data - 1] == value) && ((value == 'f') || (value == 'F'))) {
+		} else if ((this.seats[seatNum - 1] == 'f') || ((this.seats[seatNum - 1] == 'F'))) {
 			System.out.println("Refunding Frequent seat.");
-			this.seats[data -1] = '-';
+			this.seats[seatNum -1] = '-';
 			this.purchasedFrequent--;
 			this.purchasedSeats--;
 		} else {
 			System.out.println("Seat not booked, no refund applicable.");
 		}	
+		
 	}
 
 	public void fillSeats() {
@@ -89,17 +77,13 @@ class Coach {
 	public double getFrequent() {
 		return frequent;
 	}
-	
-	public int getPurchasedSeats() {
-		return purchasedSeats;
-	}
-	
-	public void setPurchasedSeats(int purchasedSeats) {
-		this.purchasedSeats = purchasedSeats;
-	}
-	
+
 	public void setTotalBalance(double totalBalance) {
 		this.totalBalance = totalBalance;
+	}
+
+	public double getTotalBalance() {
+		return totalBalance;
 	}
 
 	public void setStandard(double standard) {
@@ -112,7 +96,7 @@ class Coach {
 
 	public void setFrequent(double frequent) {
 		this.frequent = frequent;
-	}	
+	}
 
 	public int getPurchasedStandard() {
 		return purchasedStandard;
@@ -122,30 +106,28 @@ class Coach {
 		this.purchasedStandard = purchasedStandard;
 	}
 
-
 	public int getPurchasedPensioner() {
 		return purchasedPensioner;
 	}
-
 
 	public void setPurchasedPensioner(int purchasedPensioner) {
 		this.purchasedPensioner = purchasedPensioner;
 	}
 
-
 	public int getPurchasedFrequent() {
 		return purchasedFrequent;
 	}
-
 
 	public void setPurchasedFrequent(int purchasedFrequent) {
 		this.purchasedFrequent = purchasedFrequent;
 	}
 
-
-	public double getTotalBalance() {
-		return totalBalance;
+	public int getPurchasedSeats() {
+		return purchasedSeats;
 	}
 
+	public void setPurchasedSeats(int purchasedSeats) {
+		this.purchasedSeats = purchasedSeats;
+	}
 
 }

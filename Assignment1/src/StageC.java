@@ -11,6 +11,9 @@ public class StageC {
 	private int purchasedStandard = 0;
 	private int purchasedPensioner = 0;
 	private int purchasedFrequent = 0;
+	private String printStandard = " ";
+	private String printPensioner = " ";
+	private String printFrequent = " ";
 	private double totalBalance;
 	double grandTotal;
 	int value = 0;
@@ -61,12 +64,15 @@ public class StageC {
 				break;
 			case "R":
 				refundMenu();
+				mainMenu();
 				break;
 			case "D":
 				displaySeats(coach.getSeats());
+				mainMenu();
 				break;
 			case "S":
 				displayReport();
+				mainMenu();
 				break;
 			case "X":
 				System.out.println("Farewell. Happy travelling!");
@@ -99,12 +105,12 @@ public class StageC {
 			switch (choice.toUpperCase()) {
 			case "S":
 				// Standard Ticket
-				// setter for purchased seats needed
-				purchasedSeats++; // make getter/setter
-				// setter for purchased pensioner here
-				purchasedStandard++; // make getter/setter
+				purchasedSeats++;
+				purchasedStandard++;
+				coach.setPurchasedSeats(purchasedSeats);
+				coach.setPurchasedStandard(purchasedStandard);
 				totalBalance += coach.getStandard();
-				System.out.println("S chosen. Please enter a seat number: ");
+				System.out.println("S chosen. Please enter a seat number between 1 & " + coach.getSeats().length);
 				System.out.println(" ------ ");
 				int seatNumber = Integer.parseInt(sc.nextLine());
 				while (seatNumber > (coach.getTotalSeats())) {
@@ -112,20 +118,26 @@ public class StageC {
 					System.out.println("Please enter a seat number: ");
 					seatNumber = Integer.parseInt(sc.nextLine());
 				}
+				
+//				int[] standardSeatArray = new int[coach.getSeats().length];
+//				standardSeatArray[]
+//				
 
-				coach.setSeat(seatNumber, 'S');
-
+//				String msg = " ";
+//				printStandard += msg + seatNumber;
+				
+				setSeat(seatNumber, 'S');
 				System.out.println("Standard ticket purchased for seat number " + seatNumber);
 				System.out.println();
 				break;
 			case "P":
 				// Pensioner ticket
-				// setter for purchased seats needed
-				purchasedSeats++; // make getter/setter
-				// setter for purchased pensioner here
-				purchasedPensioner++; // make getter/setter
+				purchasedSeats++;
+				purchasedPensioner++;
+				coach.setPurchasedSeats(purchasedSeats);
+				coach.setPurchasedPensioner(purchasedPensioner);
 				totalBalance += coach.getPensioner();
-				System.out.println("P chosen. Please enter a seat number: ");
+				System.out.println("P chosen. Please enter a seat number between 1 & " + coach.getSeats().length);
 				System.out.println(" ------ ");
 				seatNumber = Integer.parseInt(sc.nextLine());
 				while (seatNumber > (coach.getTotalSeats())) {
@@ -134,19 +146,20 @@ public class StageC {
 					seatNumber = Integer.parseInt(sc.nextLine());
 				}
 
-				coach.setSeat(seatNumber, 'P');
-
+				String msg2 = " ";
+				printPensioner += msg2 + seatNumber;
+				setSeat(seatNumber, 'P');
 				System.out.println("Pensioner ticket purchased for seat number " + seatNumber);
 				System.out.println();
 				break;
 			case "F":
 				// Frequent Ticket
-				// setter for purchased seats needed
-				purchasedSeats++; // make getter/setter
-				// setter for purchased pensioner here
-				purchasedFrequent++; // make getter/setter
+				purchasedSeats++;
+				purchasedFrequent++;
+				coach.setPurchasedSeats(purchasedSeats);
+				coach.setPurchasedFrequent(purchasedFrequent);
 				totalBalance += coach.getFrequent();
-				System.out.println("F chosen. Please enter a seat number: ");
+				System.out.println("F chosen. Please enter a seat number between 1 & " + coach.getSeats().length);
 				System.out.println(" ------ ");
 				seatNumber = Integer.parseInt(sc.nextLine());
 				while (seatNumber > (coach.getTotalSeats())) {
@@ -155,8 +168,9 @@ public class StageC {
 					seatNumber = Integer.parseInt(sc.nextLine());
 				}
 
-				coach.setSeat(seatNumber, 'F');
-
+				String msg3 = " ";
+				printFrequent += msg3 + seatNumber;
+				setSeat(seatNumber, 'F');
 				System.out.println("Frequent ticket purchased for seat number " + seatNumber);
 				System.out.println();
 				break;
@@ -167,7 +181,7 @@ public class StageC {
 			}
 			if (i == numSeats)
 				break;
-			displayReceipt();
+			// displayReceipt();
 		}
 		System.out.println("Total seats purchased: " + coach.getPurchasedSeats());
 		System.out.println(" ------ ");
@@ -175,17 +189,83 @@ public class StageC {
 		mainMenu();
 	}
 
+	public void refundMenu() {
+		System.out.println();
+		System.out.println("Please enter seat number to refund: ");
+		displaySeats(coach.getSeats());
+		int seatNum = Integer.parseInt(sc.nextLine());
+		switch (coach.getSeats()[seatNum - 1]) {
+		// Standard ticket
+		case 'S':
+			if ((coach.getSeats()[seatNum - 1] == 'S') && (coach.getPurchasedStandard() >= 1)) {
+				coach.refundSeat(seatNum);
+				System.out.println("Standard ticket refunded. ");
+				purchasedSeats--;
+				purchasedStandard--;
+				coach.setPurchasedSeats(purchasedSeats);
+				coach.setPurchasedStandard(purchasedStandard);
+				totalBalance -= coach.getStandard();
+			} else {
+				System.out.println("Insufficient standard seats bought.");
+			}
+			System.out.println(" ------ ");
+			break;
+
+		// Pensioner ticket
+		case 'P':
+			if ((coach.getSeats()[seatNum - 1] == 'P') && (coach.getPurchasedPensioner() >= 1)) {
+				coach.refundSeat(seatNum);
+				System.out.println("Pensioner ticket refunded. ");
+				purchasedSeats--;
+				purchasedPensioner--;
+				coach.setPurchasedSeats(purchasedSeats);
+				coach.setPurchasedPensioner(purchasedPensioner);
+				totalBalance -= coach.getPensioner();
+			} else {
+				System.out.println("Insufficient pensioner seats bought.");
+			}
+			System.out.println(" ------ ");
+			break;
+
+		// Frequent Ticket
+		case 'F':
+			if ((coach.getSeats()[seatNum - 1] == 'F') && (coach.getPurchasedFrequent() >= 1)) {
+				coach.refundSeat(seatNum);
+				System.out.println("Frequent ticket refunded. ");
+				purchasedSeats--;
+				purchasedFrequent--;
+				coach.setPurchasedSeats(purchasedSeats);
+				coach.setPurchasedFrequent(purchasedFrequent);
+				totalBalance -= coach.getFrequent();
+			} else {
+				System.out.println("Insufficient frequent traveller seats bought.");
+			}
+			System.out.println(" ------ ");
+			break;
+
+		default:
+			System.out.println("Invalid input, try again.");
+			break;
+		}
+
+		System.out.println(" ------ ");
+		System.out.println("Total seats remaining: " + (coach.getTotalSeats() - coach.getPurchasedSeats()));
+		System.out.println(" ------ ");
+		mainMenu();
+	}
+
 	public void ticketMenu() {
 		System.out.println();
 		System.out.println("Seats available: " + (coach.getTotalSeats() - coach.getPurchasedSeats()));
-		System.out.printf("%-20s $%-5.2f x %-2d\n", "S. Standard seat", coach.getStandard(), purchasedStandard); // getter
-		System.out.printf("%-20s $%-5.2f x %-2d\n", "P. Pensioner seat", coach.getPensioner(), purchasedPensioner); // make
-																													// getter
-		System.out.printf("%-20s $%-5.2f x %-2d\n", "F. Frequent seat", coach.getFrequent(), purchasedFrequent); // make
-																													// getter
+		System.out.printf("%-20s $%-5.2f x %-2d\n", "S. Standard seat", coach.getStandard(),
+				coach.getPurchasedStandard());
+		System.out.printf("%-20s $%-5.2f x %-2d\n", "P. Pensioner seat", coach.getPensioner(),
+				coach.getPurchasedPensioner());
+		System.out.printf("%-20s $%-5.2f x %-2d\n", "F. Frequent seat", coach.getFrequent(),
+				coach.getPurchasedFrequent());
 		System.out.println("Please enter a seat type - S, P or F: ");
 	}
-	
+
 	// Premade method for scanner input:
 	public String getUserInput() {
 		Scanner in = new Scanner(System.in);
@@ -204,32 +284,32 @@ public class StageC {
 	}
 
 	public void displayReceipt() {
-		double totalStandard = ((double) purchasedStandard * coach.getStandard()); // make getter/setter
-		double totalPensioner = ((double) purchasedPensioner * coach.getPensioner());// make getter/setter
-		double totalFrequent = ((double) purchasedFrequent * coach.getFrequent());// make getter/setter
+		double totalStandard = ((double) coach.getPurchasedStandard() * coach.getStandard());
+		double totalPensioner = ((double) coach.getPurchasedPensioner() * coach.getPensioner());
+		double totalFrequent = ((double) coach.getPurchasedFrequent() * coach.getFrequent());
 		grandTotal = totalPensioner + totalFrequent + totalStandard;
 		System.out.println("Receipt");
 		System.out.println("*******");
 		System.out.printf("Destination: %s\n", destination);
 		System.out.println("Number of seats booked: " + coach.getPurchasedSeats());
 		System.out.println("\t\t------ ");
-		System.out.printf("%-5d %-12s @ $%6.2f = %s%6.2f \n", purchasedStandard, "* Standard", coach.getStandard(), "$",
-				(double) purchasedStandard * coach.getStandard());
-		System.out.printf("%-5d %-12s @ $%6.2f = %s%6.2f \n", purchasedPensioner, "* Pensioner", coach.getPensioner(),
-				"$", (double) purchasedPensioner * coach.getPensioner());
-		System.out.printf("%-5d %-12s @ $%6.2f = %s%6.2f \n", purchasedFrequent, "* Frequent", coach.getFrequent(), "$",
-				(double) purchasedFrequent * coach.getFrequent());
+		System.out.printf("%-5d %-12s @ $%6.2f = %s%6.2f - Seats %s\n", purchasedStandard, "* Standard",
+				coach.getStandard(), "$", (double) purchasedStandard * coach.getStandard(), printStandard);
+		System.out.printf("%-5d %-12s @ $%6.2f = %s%6.2f - Seats %s\n", purchasedPensioner, "* Pensioner",
+				coach.getPensioner(), "$", (double) purchasedPensioner * coach.getPensioner(), printPensioner);
+		System.out.printf("%-5d %-12s @ $%6.2f = %s%6.2f - Seats %s\n", purchasedFrequent, "* Frequent",
+				coach.getFrequent(), "$", (double) purchasedFrequent * coach.getFrequent(), printFrequent);
 		System.out.println("\t\t------ ");
-		System.out.printf("\t\t\tTotal: $ %-5.2f\n", grandTotal);
+		System.out.printf("\t\t\tTotal: $%-5.2f\n", grandTotal);
 	}
 
 	public void displayReport() {
 		System.out.println();
-		System.out.println("Seats available: " + (coach.getTotalSeats() - coach.getPurchasedSeats()));
-		System.out.printf("Number of sales: %-5d\n", coach.getPurchasedSeats());
-		System.out.println(
-				"Percent % of seats sold: " + ((double) (coach.getPurchasedSeats() * 100) / coach.getAllSeats()));
-		System.out.printf("Average price: $%-5.2f\n", ((double) grandTotal / coach.getPurchasedSeats()));
+		System.out.printf("%-18s %6d\n", "Seats available:", (coach.getTotalSeats() - coach.getPurchasedSeats()));
+		System.out.printf("%-18s %6d\n", "Number of sales:", coach.getPurchasedSeats());
+		System.out.printf("%-18s %5.0f%s\n", "Percentage sold:",
+				((double) (coach.getPurchasedSeats() * 100) / coach.getTotalSeats()), "%");
+		System.out.printf("%-18s $%5.2f\n", "Average price:", ((double) grandTotal / coach.getPurchasedSeats()));
 		System.out.println();
 		mainMenu();
 	}
@@ -241,72 +321,24 @@ public class StageC {
 		for (int i = 0; i < coach.getSeats().length; i++) {
 			if ((i % n) == 0)
 				System.out.println();
-			System.out.printf("%2d %-2s", (i + 1), coach.getSeats()[i]);
+			if ((coach.getSeats()[i] == 'S') || (coach.getSeats()[i] == 'P') || (coach.getSeats()[i] == 'F')) {
+				System.out.printf("%2d %-2s", (i + 1), "B");
+			} else {
+				System.out.printf("%2d %-2s", (i + 1), coach.getSeats()[i]);
+			}
 		}
 		System.out.println();
 		System.out.println();
-		mainMenu();
 	}
 
-	// Whole refund menu probably needs to be pushed to Coach class, with price
-	// totals
-	public void refundMenu() {
-		System.out.println();
-		System.out.println("Please enter seat number to refund: ");
-		displaySeats(coach.getSeats());
-		getUserInput();
-		int seatNum = Integer.parseInt(sc.nextLine());
-		coach.refundSeat(seatNum);
-		switch (choice.toUpperCase()) {
-		case "S":
-			// Standard Ticket
-			System.out.println(" ------ ");
-			if ((totalBalance >= coach.getStandard()) && (coach.getPurchasedStandard() > 0)) {
-				System.out.println("Standard ticket refunded.");
-				System.out.println();
-				purchasedSeats--;
-				purchasedStandard--;
-				coach.setPurchasedSeats() - 1;
-				coach.setPurchasedStandard() - 1; //make getter/setter
-				totalBalance -= coach.getStandard();
-			} else {
-				System.out.println("Cannot refund - insufficient standard seats bought.");
-			}
-			System.out.println(" ------ ");
-			break;
-		case "P":
-			// Pensioner ticket
-			if ((totalBalance >= coach.getPensioner()) && (purchasedPensioner > 0)) {
-				System.out.println("Pensioner ticket refunded. ");
-				purchasedSeats--;
-				purchasedPensioner--; //make getter/setter
-				totalBalance -= coach.getPensioner();
-			} else {
-				System.out.println("Insufficient pensioner seats bought.");
-			}
-			System.out.println(" ------ ");
-			break;
-		case "F":
-			// Frequent Ticket
-			if ((totalBalance >= coach.getFrequent()) && (purchasedFrequent > 0)) {
-				System.out.println("Frequent ticket refunded. ");
-				purchasedSeats--;
-				purchasedFrequent--; //make getter/setter
-				totalBalance -= coach.getFrequent();
-			} else {
-				System.out.println("Insufficient frequent traveller seats bought.");
-			}
-			System.out.println(" ------ ");
-			break;
-		default:
-			System.out.println("Invalid input, try again.");
-			break;
-
+	public void setSeat(int data, char value) {
+		while ((coach.getSeats()[data - 1] == 'S') || (coach.getSeats()[data - 1] == 'P')
+				|| (coach.getSeats()[data - 1] == 'F')) {
+			System.out.println("Seat already booked - please choose another: ");
+			Scanner in = new Scanner(System.in);
+			data = Integer.parseInt(in.nextLine());
 		}
-		System.out.println("Total seats remaining: " + (coach.getTotalSeats() - coach.getPurchasedSeats()));
-		System.out.println(" ------ ");
-		displayReceipt();
-		mainMenu();
+		coach.getSeats()[data - 1] = value;
 	}
 
 	public static void main(String[] args) {
