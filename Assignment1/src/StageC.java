@@ -1,3 +1,14 @@
+/* CPT121 / COSC2135 Programming 1 - Assignment 1
+ * Name: Sarah Ruello
+ * Student #: s3871770
+ * 
+ * 
+ * DCA Coach Booking System - StageC class: 
+ * This class uses getter & setter methods from Coach.java to retrieve and set 
+ * values held in the Coach class. It contains the main method and is the 
+ * instantiator of the program. 
+ */
+
 import java.util.Scanner;
 
 public class StageC {
@@ -12,10 +23,11 @@ public class StageC {
 	private String stanArrayToString = " ";
 	private String pensArrayToString = " ";
 	private String freqArrayToString = " ";
-	private double grandTotal;	
+	private double grandTotal;
 	Coach coach = new Coach();
 
-	// Stage C Constructor - instantiates the StageC class and calls menu methods:
+	// Stage C Constructor - instantiates the StageC class, asks the user to enter
+	// trip pricing details on startup (stored in Coach), and calls menu methods:
 	public StageC() {
 		System.out.println("+-----------------------------------------------+");
 		System.out.println("+------------- DCA Bookings System -------------+");
@@ -23,7 +35,7 @@ public class StageC {
 
 		System.out.print("Enter destination: ");
 		coach.setDestination(destination = sc.nextLine());
-		
+
 		System.out.print("Enter # of rows of seats: ");
 		coach.setTotalSeats(Integer.parseInt(sc.nextLine()));
 
@@ -43,11 +55,12 @@ public class StageC {
 		mainMenu();
 	}
 
-	// Main menu method:
+	// Main menu method - displays menu options and drives menu using a String
+	// based switch statement:
 	public void mainMenu() {
 		System.out.println(" ----------------------------------------------- ");
 		System.out.printf("%29s\n", "Main Menu");
-		System.out.println(" ----------------------------------------------- "); // Char count 49
+		System.out.println(" ----------------------------------------------- ");
 		System.out.println(" [B] ook a seat");
 		System.out.println(" [R] efund a seat");
 		System.out.println(" [D] isplay available seats");
@@ -108,20 +121,26 @@ public class StageC {
 			}
 		}
 
+		// For loop containing a switch statement to enable selection of seat types:
 		for (int i = 0; i < numSeats; i++) {
 			ticketMenu();
 			getUserInput();
 			switch (choice.toUpperCase()) {
 			// Standard Ticket
 			case "S":
+				// Increments the counter for both total seats purchased, and standard tickets
+				// purchased, and sends a value to be stored in the Coach class:
 				purchasedSeats++;
 				purchasedStandard++;
 				coach.setPurchasedSeats(purchasedSeats);
 				coach.setPurchasedStandard(purchasedStandard);
 
-				System.out.println("S chosen. Please enter an available seat number between 1 - " + coach.getSeats().length);
-
+				System.out.println(
+						"S chosen. Please enter an available seat number between 1 - " + coach.getSeats().length);
 				int seatNumber = Integer.parseInt(sc.nextLine());
+
+				// If seat number chosen is greater than the length of the entire seats array,
+				// asks again:
 				while (seatNumber > (coach.getSeats().length)) {
 					System.out.println("Seat # does not exist. Please pick between 1 - " + coach.getSeats().length);
 					System.out.println("Please enter a seat number: ");
@@ -135,6 +154,7 @@ public class StageC {
 				break;
 			// Pensioner ticket
 			case "P":
+				// Same as above but for pensioner ticket:
 				purchasedSeats++;
 				purchasedPensioner++;
 				coach.setPurchasedSeats(purchasedSeats);
@@ -156,6 +176,7 @@ public class StageC {
 				break;
 			// Frequent Ticket
 			case "F":
+				// And for the frequent ticket:
 				purchasedSeats++;
 				purchasedFrequent++;
 				coach.setPurchasedSeats(purchasedSeats);
@@ -175,11 +196,13 @@ public class StageC {
 				System.out.println(" ------ ");
 				System.out.println();
 				break;
+			// If letter entered isn't one of S, P or F - asks again:
 			default:
 				System.out.println("Invalid seat type, try again.");
 				break;
 
 			}
+			// Stops asking for ticket types once the number of seats required is reached:
 			if (i == numSeats)
 				break;
 
@@ -201,13 +224,21 @@ public class StageC {
 		System.out.print("Please enter seat number to refund: ");
 		int seatNum = Integer.parseInt(sc.nextLine());
 
+		// Switch statement for refund. [seatNum - 1] being the actual number of
+		// the index in the array, not visible to the end user - who wouldn't be
+		// counting from seat 0 like an array does:
 		switch (coach.getSeats()[seatNum - 1]) {
 		// Standard ticket
 		case 'S':
+			// If the value at the index of the seat chosen by the user == 'S', and the
+			// number of the Standard tickets purchased is equal or greater than 1, refunds
+			// a standard ticket. Same check applies to the other two tickets - will not
+			// refund a vacant seat.
 			if ((coach.getSeats()[seatNum - 1] == 'S') && (coach.getPurchasedStandard() >= 1)) {
 				coach.refundSeat(seatNum);
 				System.out.println(" ------ ");
 				System.out.println("Standard ticket refunded. ");
+				// Decrements counters and sets new values:
 				purchasedSeats--;
 				purchasedStandard--;
 				coach.setPurchasedSeats(purchasedSeats);
@@ -252,11 +283,12 @@ public class StageC {
 			break;
 
 		default:
+			// If a seat index value contains anything other than S, P or F:
 			System.out.println("Seat not booked, try again.");
 			refundMenu();
 			break;
 		}
-
+		// Shows the updated amount of seats available after refund:
 		System.out.println("Total seats remaining: " + (coach.getSeats().length - coach.getPurchasedSeats()));
 		System.out.println();
 		mainMenu();
@@ -267,21 +299,24 @@ public class StageC {
 	public void ticketMenu() {
 		System.out.println();
 
-		// Cycles through seat array to collect seat numbers of Standard tickets:
+		// Cycles through seat array to collect seat numbers of Standard tickets, and
+		// prints to a string:
 		stanArrayToString = " ";
 		for (int i = 0; i < coach.getSeats().length; i++) {
 			if (coach.getSeats()[i] == 'S') {
 				stanArrayToString += (i + 1) + ", ";
 			}
 		}
-		// Cycles through seat array to collect seat numbers of Pensioner tickets:
+		// Cycles through seat array to collect seat numbers of Pensioner tickets, and
+		// prints to a string:
 		pensArrayToString = " ";
 		for (int i = 0; i < coach.getSeats().length; i++) {
 			if (coach.getSeats()[i] == 'P') {
 				pensArrayToString += (i + 1) + ", ";
 			}
 		}
-		// Cycles through seat array to collect seat numbers of Frequent tickets:
+		// Cycles through seat array to collect seat numbers of Frequent tickets, and
+		// prints to a string:
 		freqArrayToString = " ";
 		for (int i = 0; i < coach.getSeats().length; i++) {
 			if (coach.getSeats()[i] == 'F') {
@@ -335,7 +370,7 @@ public class StageC {
 		stanArrayToString = " ";
 		for (int i = 0; i < coach.getSeats().length; i++) {
 			if (coach.getSeats()[i] == 'S') {
-				stanArrayToString +=  (i + 1) + ", ";
+				stanArrayToString += (i + 1) + ", ";
 			}
 		}
 
@@ -371,9 +406,12 @@ public class StageC {
 		System.out.println();
 	}
 
-	// Displays coach sales statistics:
+	// Displays coach sales statistics - retrieved from Coach class:
 	public void displayReport() {
 		System.out.println();
+		System.out.println(" ----------------------------------------------- ");
+		System.out.printf("%29s\n", "Statistics");
+		System.out.println(" ----------------------------------------------- ");
 		System.out.printf("%-18s %6d\n", "Seats available:", (coach.getSeats().length - coach.getPurchasedSeats()));
 		System.out.printf("%-18s %6d\n", "Number of sales:", coach.getPurchasedSeats());
 		System.out.printf("%-18s %5.0f%s\n", "Percentage sold:",
@@ -392,6 +430,8 @@ public class StageC {
 		System.out.println(" ----------------------------------------------- ");
 		System.out.println(" B = Booked\n - = Vacant");
 		for (int i = 0; i < coach.getSeats().length; i++) {
+			// If statement for 4-to-a-row display - if i is divisible by 4 with no
+			// remainder, prints a new line:
 			if ((i % 4) == 0)
 				System.out.println();
 			if ((coach.getSeats()[i] == 'S') || (coach.getSeats()[i] == 'P') || (coach.getSeats()[i] == 'F')) {
@@ -404,7 +444,8 @@ public class StageC {
 		System.out.println();
 	}
 
-	// Sets a chosen index value in the Coach seats[] array to a ticket type:
+	// Sets a chosen index value in the Coach seats[] array to a ticket type. If S,
+	// P or F already exist at that index - asks again.
 	public void setSeat(int data, char value) {
 		while ((coach.getSeats()[data - 1] == 'S') || (coach.getSeats()[data - 1] == 'P')
 				|| (coach.getSeats()[data - 1] == 'F')) {
@@ -414,8 +455,8 @@ public class StageC {
 		}
 		coach.getSeats()[data - 1] = value;
 	}
-	
-	//Main method:
+
+	// Main method:
 	public static void main(String[] args) {
 		StageC app = new StageC();
 	}

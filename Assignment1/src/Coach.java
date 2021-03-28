@@ -1,3 +1,14 @@
+/* CPT121 / COSC2135 Programming 1 - Assignment 1
+ * Name: Sarah Ruello
+ * Student #: s3871770
+ * 
+ * 
+ * DCA Coach Booking System - Coach class: 
+ * This class stores the information for the coach, including price and # of tickets purchased. 
+ * It contains the getter & setter methods to feed StageC and allows StageC to update values.
+ * 
+ */
+
 import java.util.*;
 
 class Coach {
@@ -12,10 +23,11 @@ class Coach {
 	private int totalSeats;
 	private char[] seats;
 
+	// Getter & setter for destination string:
 	public void setDestination(String destination) {
 		this.destination = destination;
 	}
-	
+
 	public String getDestination() {
 		return destination;
 	}
@@ -25,29 +37,24 @@ class Coach {
 		this.totalSeats = seatRows * 4;
 	}
 
-	// Returns seats array values:
+	// Returns seats[] array values to StageC:
 	public char[] getSeats() {
 		return seats;
 	}
 
 	// Refund seat method - takes an int value for a specific seat, checks whether
-	// it is an S, P or F and updates the counters/values from there:
+	// it is an S, P or F at that index - 1, and updates the value to - (vacant). If
+	// seat has no letter at that index, does not refund.
 	public void refundSeat(int seatNum) {
 		if ((this.seats[seatNum - 1] == 's') || ((this.seats[seatNum - 1] == 'S'))) {
 			System.out.println("Refunding Standard seat...");
 			this.seats[seatNum - 1] = '-';
-			this.purchasedStandard--;
-			this.purchasedSeats--;
 		} else if ((this.seats[seatNum - 1] == 'p') || ((this.seats[seatNum - 1] == 'P'))) {
 			System.out.println("Refunding Pensioner seat...");
 			this.seats[seatNum - 1] = '-';
-			this.purchasedPensioner--;
-			this.purchasedSeats--;
 		} else if ((this.seats[seatNum - 1] == 'f') || ((this.seats[seatNum - 1] == 'F'))) {
 			System.out.println("Refunding Frequent seat...");
 			this.seats[seatNum - 1] = '-';
-			this.purchasedFrequent--;
-			this.purchasedSeats--;
 		} else {
 			System.out.println("Seat not booked, no refund applicable.");
 		}
@@ -55,12 +62,12 @@ class Coach {
 
 	// Fills the seat array with - (unbooked indicator) on startup:
 	public void fillSeats() {
-		seats = new char[totalSeats];		
+		seats = new char[totalSeats];
 		for (int i = 0; i < seats.length; i++)
-            seats[i] = '-';
+			seats[i] = '-';
 	}
 
-	//Getters for ticket prices:
+	// Getters for ticket prices:
 	public double getStandard() {
 		return standard;
 	}
@@ -86,7 +93,7 @@ class Coach {
 		this.frequent = frequent;
 	}
 
-	//Getters & setters for number of each ticket type sold:
+	// Getters & setters for number of each ticket type sold:
 	public int getPurchasedStandard() {
 		return purchasedStandard;
 	}
