@@ -185,75 +185,93 @@ public class StageC {
 				System.out.println("Found event: " + tffEvents[i].getTitle());
 				foundit = true;
 
-				// enter # of bookings required - fail this if # of tickets available is < than:
+				// enter # of bookings required - fail this if # of tickets available is < than
+				// - this needs to go to TffExperienceEvent. Book ticket incrementally rather
+				// than preselecting a #
 				if (tffEvents[i] instanceof TffExperienceEvent) {
-					System.out.println("Please enter # of tickets required: ");
-					int numTickets = Integer.parseInt(sc.nextLine());
-					if (numTickets <= (((TffExperienceEvent) tffEvents[i]).getMaxTickets()
-							- tffEvents[i].getPurchasedTickets())) {
+//					System.out.println("Please enter # of tickets required: ");
+//					int numTickets = Integer.parseInt(sc.nextLine());
+//					if (numTickets <= (((TffExperienceEvent) tffEvents[i]).getMaxTickets()
+//							- tffEvents[i].getPurchasedTickets())) {
 
-						// Increments ticket counter on TffExperienceEvent:
-						((TffExperienceEvent) tffEvents[i]).setNumBookings(numTickets);
+					// Increments ticket counter on TffExperienceEvent:
+//						for (int j = 0; j < numTickets; j++) {
 
-						for (int j = 0; j < numTickets; j++) {
-							System.out.println("Select a ticket type 1-3: ");
-							System.out.println("1. Adult");
-							System.out.println("2. Child");
-							System.out.println("3. Concession");
-							String ticketType = sc.nextLine();
-							// choose a ticket type - menu of 1-3
-							switch (ticketType) {
-							case "1":
-								ticketType = "Adult";
-								System.out.println("Enter a name for the booking: ");
-								String name = sc.nextLine();
-								tffEvents[i].bookEvent(ticketType, name);
-								((TffExperienceEvent) tffEvents[i]).displayTickets();
-								break;
-							case "2":
-								ticketType = "Child";
-								System.out.println("Enter a name for the booking: ");
-								name = sc.nextLine();
-								tffEvents[i].bookEvent(ticketType, name);
-								((TffExperienceEvent) tffEvents[i]).displayTickets();
-								break;
-							case "3":
-								ticketType = "Concession";
-								System.out.println("Enter a name for the booking: ");
-								name = sc.nextLine();
-								tffEvents[i].bookEvent(ticketType, name);
-								((TffExperienceEvent) tffEvents[i]).displayTickets();
-								break;
-							default:
-								System.out.println("Invalid selection, try again. ");
-								break;
-							}
-							if (i == numTickets)
-								break;
+					int numBookings = 0;
+					System.out.println("Select a ticket type 1-3: ");
+					System.out.println("1. Adult");
+					System.out.println("2. Child");
+					System.out.println("3. Concession");
+					String ticketType = sc.nextLine();
+					// choose a ticket type - menu of 1-3:
+					switch (ticketType) {
+					case "1":
+						ticketType = "Adult";
+						System.out.println("Enter a name for the booking: ");
+						String name = sc.nextLine();
+						
+						if ((tffEvents[i].bookEvent(ticketType, name) == true)) {
+							numBookings++;
+							((TffExperienceEvent) tffEvents[i]).setNumBookings(numBookings);
+							((TffExperienceEvent) tffEvents[i]).displayTickets();
+						} else {
+							System.out.println("Error StageC - no tickets remaining.");
+							mainMenu();
+						}
+//						tffEvents[i].bookEvent(ticketType, name);
+//						numBookings++;
+//						((TffExperienceEvent) tffEvents[i]).setNumBookings(numBookings);
+//						((TffExperienceEvent) tffEvents[i]).displayTickets();
+						break;
+					case "2":
+						ticketType = "Child";
+						System.out.println("Enter a name for the booking: ");
+						name = sc.nextLine();
 
-							System.out.println("Experience ticket purchased.");
-						} 
+						if ((tffEvents[i].bookEvent(ticketType, name) == true)) {
+							numBookings++;
+							((TffExperienceEvent) tffEvents[i]).setNumBookings(numBookings);
+							((TffExperienceEvent) tffEvents[i]).displayTickets();
+						} else {
+							System.out.println("Error StageC - no tickets remaining.");
+							mainMenu();
+						}
 
-						mainMenu();
-
-					} else if (numTickets > (((TffExperienceEvent) tffEvents[i]).getMaxTickets()
-							- tffEvents[i].getPurchasedTickets())) {
-						System.out.println("Error: Insufficient tickets available.");
+						break;
+					case "3":
+						ticketType = "Concession";
+						System.out.println("Enter a name for the booking: ");
+						name = sc.nextLine();
+						tffEvents[i].bookEvent(ticketType, name);
+						numBookings++;
+						((TffExperienceEvent) tffEvents[i]).setNumBookings(numBookings);
+						((TffExperienceEvent) tffEvents[i]).displayTickets();
+						break;
+					default:
+						System.out.println("Invalid selection, try again. ");
+						break;
 					}
 
-					// fix up TffEvent one:
-				} else if (tffEvents[i] instanceof TffEvent) {
-					System.out.println("Please enter # of tickets required: ");
-					int numTickets = Integer.parseInt(sc.nextLine());
-					//tffEvents[i].buyTickets(numTickets);
-					for (int j = 0; j < numTickets; i++) {
-						// choose a ticket type - menu of 1-3
-						// Enter a name for the booking
-						// return to tffEvents.bookEvent(ticketType, name);
-						// display event title/name/price
-					}
+					break;
+
+					// System.out.println("Experience ticket purchased.");
+				}
+
+				mainMenu();
+
+				// fix up TffEvent one:
+			} else if (tffEvents[i] instanceof TffEvent) {
+				System.out.println("Please enter # of tickets required: ");
+				int numTickets = Integer.parseInt(sc.nextLine());
+				// tffEvents[i].buyTickets(numTickets);
+				for (int j = 0; j < numTickets; i++) {
+					// choose a ticket type - menu of 1-3
+					// Enter a name for the booking
+					// return to tffEvents.bookEvent(ticketType, name);
+					// display event title/name/price
 				}
 			}
+
 		}
 		if (!foundit) {
 			System.out.println("Event not found.");

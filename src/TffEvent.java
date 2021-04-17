@@ -45,10 +45,9 @@ public class TffEvent {
 		return purchasedTickets;
 	}
 	
-//	// this works. now replace this with bookEvent:
-//	public void buyTickets(int numTickets) {
-//		purchasedTickets += numTickets;
-//	}
+	public void setPurchasedTickets(int purchasedTickets) {
+		this.purchasedTickets = purchasedTickets;
+	}
 
 	public void displayEvent() {
 		System.out.println(" ----------------------------------------------- ");

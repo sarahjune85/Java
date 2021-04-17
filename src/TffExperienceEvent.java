@@ -4,7 +4,7 @@ import java.util.Arrays;
 public class TffExperienceEvent extends TffEvent {
 
 	private int maxTickets;
-	private int numBookings;
+	private int numBookings = 0;
 	String[] bookings; // Class TffExperienceEvent must utilise a 1D String array instance
 						// variable, called bookings, to store
 	// booking details (i.e. the name list of ticket holder name and price paid).
@@ -58,29 +58,31 @@ public class TffExperienceEvent extends TffEvent {
 
 	@Override
 	public boolean bookEvent(String ticketType, String name) {
-		super.bookEvent(ticketType, name);
-		// bookings = new String[getPurchasedTickets()];
-		String msg = " ";
-		msg += name;
-		msg += ", ";
-		msg += ticketType;
-		System.out.println("Printing.... " + msg);
-//		while ((numBookings + getPurchasedTickets()) < maxTickets) {
-		for (int i = 0; i < bookings.length; i++) {
-			if (bookings[i] == null) {
-				bookings[i] = msg;
-				break;
-			} else if ((numBookings + getPurchasedTickets()) == maxTickets) {
-				System.out.println("Error - maximum tickets sold.");
-				return false;
+		
+		// IT WORKS MOTHERFUCKKKKKKKKKKKKKKER - LEAVE IT
+		if ((maxTickets - getPurchasedTickets()) > 0) {
+			super.bookEvent(ticketType, name);
+			String msg = " ";
+			msg += name;
+			msg += ", ";
+			msg += ticketType;
+			System.out.println("Printing.... " + msg);
+			for (int i = 0; i < maxTickets; i++) {
+				if (bookings[i] == null) {
+					bookings[i] = msg;
+					break;
+				}
 			}
+		} else {
+			System.out.println("Error - maximum tickets sold.");
+			return false;
 		}
-
+		return true;
 		// This method should make appropriate use of the super construct. The method
 		// should return true if a
 		// booking was successfully performed, and false if a booking couldn’t be
 		// successfully completed.
-		return true;
+		// return true;
 	}
 
 	public void refundBooking(String name) {
