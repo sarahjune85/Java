@@ -11,7 +11,7 @@
 
 import java.util.Scanner;
 
-public class StageC {
+public class StageCAssign1 {
 	// Object member variables, only visible to StageC methods:
 	private String choice;
 	private Scanner sc = new Scanner(System.in);
@@ -28,7 +28,7 @@ public class StageC {
 
 	// Stage C Constructor - instantiates the StageC class, asks the user to enter
 	// trip pricing details on startup (stored in Coach), and calls menu methods:
-	public StageC() {
+	public StageCAssign1() {
 		System.out.println("+-----------------------------------------------+");
 		System.out.println("+------------- DCA Bookings System -------------+");
 		System.out.println("+-----------------------------------------------+");
@@ -458,6 +458,6 @@ public class StageC {
 
 	// Main method:
 	public static void main(String[] args) {
-		StageC app = new StageC();
+		StageCAssign1 app = new StageCAssign1();
 	}
 }
