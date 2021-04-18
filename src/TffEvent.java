@@ -10,7 +10,6 @@ public class TffEvent {
 	private double child;
 	private double concession;
 	private int purchasedTickets = 0;
-	private String bookings;
 
 	// constructor
 	public TffEvent(String title, String description, double adult, double child, double concession) {
@@ -25,21 +24,21 @@ public class TffEvent {
 		return title;
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public double getAdult() {
-		return adult;
-	}
-
-	public double getChild() {
-		return child;
-	}
-
-	public double getConcession() {
-		return concession;
-	}
+//	public String getDescription() {
+//		return description;
+//	}
+	// do i need these?
+//	public double getAdult() {
+//		return adult;
+//	}
+//
+//	public double getChild() {
+//		return child;
+//	}
+//
+//	public double getConcession() {
+//		return concession;
+//	}
 
 	public int getPurchasedTickets() {
 		return purchasedTickets;
@@ -60,10 +59,7 @@ public class TffEvent {
 	}
 
 	public boolean bookEvent(String ticketType, String name) {
-		/*
-		 * where ticketType indicates the type of the ticket being booked (“Adult”,
-		 * “Child” or “Concession”), and name is the name of the attendee. 
-		 */
+
 		System.out.println(" ----------------------------------------------- ");
 		System.out.printf("Event title:    %30s\n", title);
 		System.out.printf("Name:           %30s\n", name);
@@ -73,17 +69,12 @@ public class TffEvent {
 		 * This method should print ticket details and manipulate the count of tickets sold to
 		 * indicate that a booking has occurred. The method returns true.
 		 */
-		
-		// what the hell does this save to? String 2D array? can't think of anything else.
 
 		// return true only
 		purchasedTickets++;
 		return true;
 	}
 	
-	public String toString() {
-		return String.format("Name: %s\t Ticket: %s ", name, ticketType)
-	}
 
 //	// Looks at a single petObject[] index to print one pet's values to a String:
 //	public String getPetArray(int index) {

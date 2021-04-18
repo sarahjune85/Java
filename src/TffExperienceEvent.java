@@ -1,13 +1,11 @@
-import java.util.Arrays;
+import java.util.Arrays; // deleet mee when done
 
 // Subclass
 public class TffExperienceEvent extends TffEvent {
 
 	private int maxTickets;
 	private int numBookings = 0;
-	String[] bookings; // Class TffExperienceEvent must utilise a 1D String array instance
-						// variable, called bookings, to store
-	// booking details (i.e. the name list of ticket holder name and price paid).
+	String[] bookings; 
 
 	public TffExperienceEvent(String title, String description, double adult, double child, double concession,
 			int maxTickets) {
@@ -22,10 +20,6 @@ public class TffExperienceEvent extends TffEvent {
 
 	public int getNumBookings() {
 		return numBookings;
-	}
-
-	public String[] getBookings() {
-		return bookings;
 	}
 
 	public void setNumBookings(int numTickets) {
@@ -56,10 +50,17 @@ public class TffExperienceEvent extends TffEvent {
 //	}
 //
 
-	@Override
-	public boolean bookEvent(String ticketType, String name) {
+	public void refundBooking(String name) {
+
 		
-		// IT WORKS MOTHERFUCKKKKKKKKKKKKKKER - LEAVE IT
+		
+		
+	}
+	
+	@Override
+	public boolean bookEvent(String ticketType, String name) {		
+		//
+		// IT WORKS  - LEAVE IT
 		if ((maxTickets - getPurchasedTickets()) > 0) {
 			super.bookEvent(ticketType, name);
 			String msg = " ";
@@ -74,19 +75,12 @@ public class TffExperienceEvent extends TffEvent {
 				}
 			}
 		} else {
-			System.out.println("Error - maximum tickets sold.");
+			System.out.println("Error - sorry, no tickets remaining.");
+			// Returns false if booking failed:
 			return false;
 		}
+		// Returns true if the booking is performed.
 		return true;
-		// This method should make appropriate use of the super construct. The method
-		// should return true if a
-		// booking was successfully performed, and false if a booking couldn’t be
-		// successfully completed.
-		// return true;
-	}
-
-	public void refundBooking(String name) {
-
 	}
 
 	@Override
@@ -94,8 +88,10 @@ public class TffExperienceEvent extends TffEvent {
 		super.displayEvent();
 		System.out.printf("Max tickets:    %30d\n", maxTickets);
 		System.out.println("Bookings: " + numBookings);
+		
 		// array debugger view - delete me later:
 		System.out.println(Arrays.toString(bookings));
+		// deeleete meee
 
 		for (int i = 0; i < bookings.length; i++) {
 			if (bookings[i] != null) {
@@ -103,5 +99,4 @@ public class TffExperienceEvent extends TffEvent {
 			}
 		}
 	}
-
 }

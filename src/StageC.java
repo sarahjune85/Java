@@ -146,8 +146,6 @@ public class StageC {
 		boolean foundit = false;
 		for (int i = 0; i < eventCounter; i++) {
 			// ignore case entered by user by converting both id & getTitle() to lowercase.
-			// contains() is case sensitive, but was used over equalsIgnoreCase() to enable
-			// a partial/keyword search:
 			if (tffEvents[i].getTitle().toLowerCase().contains(id.toLowerCase())) {
 				System.out.println("Found it!");
 				tffEvents[i].displayEvent();
@@ -162,13 +160,27 @@ public class StageC {
 
 	// lists all event titles in TffEvent[] array.
 	public void listAllEvents() {
-		System.out.println("All Event Details:");
-		for (int i = 0; i < eventCounter; i++) {
-			// stops array before it is empty, preventing null pointer exception:
-			if (tffEvents[i] != null)
-				// Polymorphic method call will refer to either TffEvent or TffExperienceEvent
-				// depending on object:
-				tffEvents[i].displayEvent();
+		if (tffEvents != null) {
+			// boolean hasNull = false;
+
+			if (tffEvents[0] == null) {
+				for (int i = 0; i < tffEvents.length; i++) {
+					// hasNull = true;
+					System.out.println("No events found");
+					break; // to terminate the iteration
+				}
+			} else {
+				System.out.println("All Event Details:");
+				for (int j = 0; j < eventCounter; j++) {
+					// stops array before it is empty, preventing null pointer exception:
+					if (tffEvents[j] != null) {
+						// Polymorphic method call will refer to either TffEvent or TffExperienceEvent
+						// depending on object:
+						tffEvents[j].displayEvent();
+					}
+				}
+			}
+			// hasNull = true;
 		}
 	}
 
@@ -178,25 +190,14 @@ public class StageC {
 		String id = sc.nextLine();
 		System.out.println("Searching events for \"" + id + "\"");
 		boolean foundit = false;
-		// i = counts events
-		// j = counts tickets per event
+
 		for (int i = 0; i < eventCounter; i++) {
 			if (tffEvents[i].getTitle().toLowerCase().contains(id.toLowerCase())) {
 				System.out.println("Found event: " + tffEvents[i].getTitle());
 				foundit = true;
 
-				// enter # of bookings required - fail this if # of tickets available is < than
-				// - this needs to go to TffExperienceEvent. Book ticket incrementally rather
-				// than preselecting a #
+				// Booking going through TffExperienceEvent method:
 				if (tffEvents[i] instanceof TffExperienceEvent) {
-//					System.out.println("Please enter # of tickets required: ");
-//					int numTickets = Integer.parseInt(sc.nextLine());
-//					if (numTickets <= (((TffExperienceEvent) tffEvents[i]).getMaxTickets()
-//							- tffEvents[i].getPurchasedTickets())) {
-
-					// Increments ticket counter on TffExperienceEvent:
-//						for (int j = 0; j < numTickets; j++) {
-
 					int numBookings = 0;
 					System.out.println("Select a ticket type 1-3: ");
 					System.out.println("1. Adult");
@@ -209,7 +210,7 @@ public class StageC {
 						ticketType = "Adult";
 						System.out.println("Enter a name for the booking: ");
 						String name = sc.nextLine();
-						
+
 						if ((tffEvents[i].bookEvent(ticketType, name) == true)) {
 							numBookings++;
 							((TffExperienceEvent) tffEvents[i]).setNumBookings(numBookings);
@@ -218,10 +219,6 @@ public class StageC {
 							System.out.println("Error StageC - no tickets remaining.");
 							mainMenu();
 						}
-//						tffEvents[i].bookEvent(ticketType, name);
-//						numBookings++;
-//						((TffExperienceEvent) tffEvents[i]).setNumBookings(numBookings);
-//						((TffExperienceEvent) tffEvents[i]).displayTickets();
 						break;
 					case "2":
 						ticketType = "Child";
@@ -236,46 +233,47 @@ public class StageC {
 							System.out.println("Error StageC - no tickets remaining.");
 							mainMenu();
 						}
-
 						break;
 					case "3":
 						ticketType = "Concession";
 						System.out.println("Enter a name for the booking: ");
 						name = sc.nextLine();
-						tffEvents[i].bookEvent(ticketType, name);
-						numBookings++;
-						((TffExperienceEvent) tffEvents[i]).setNumBookings(numBookings);
-						((TffExperienceEvent) tffEvents[i]).displayTickets();
+
+						if ((tffEvents[i].bookEvent(ticketType, name) == true)) {
+							numBookings++;
+							((TffExperienceEvent) tffEvents[i]).setNumBookings(numBookings);
+							((TffExperienceEvent) tffEvents[i]).displayTickets();
+						} else {
+							System.out.println("Error StageC - no tickets remaining.");
+							mainMenu();
+						}
 						break;
 					default:
 						System.out.println("Invalid selection, try again. ");
 						break;
 					}
-
 					break;
+				} else if (tffEvents[i] instanceof TffEvent) {
+					System.out.println("Please enter # of tickets required: ");
+					int numTickets = Integer.parseInt(sc.nextLine());
+					// tffEvents[i].buyTickets(numTickets);
+					for (int j = 0; j < numTickets; i++) {
+						// choose a ticket type - menu of 1-3
+						// Enter a name for the booking
+						// return to tffEvents.bookEvent(ticketType, name);
+						// display event title/name/price
 
-					// System.out.println("Experience ticket purchased.");
+					}
+					mainMenu();
+
+					// fix up TffEvent one:
+
 				}
 
+			} else if (!foundit) {
+				System.out.println("Event not found.");
 				mainMenu();
-
-				// fix up TffEvent one:
-			} else if (tffEvents[i] instanceof TffEvent) {
-				System.out.println("Please enter # of tickets required: ");
-				int numTickets = Integer.parseInt(sc.nextLine());
-				// tffEvents[i].buyTickets(numTickets);
-				for (int j = 0; j < numTickets; i++) {
-					// choose a ticket type - menu of 1-3
-					// Enter a name for the booking
-					// return to tffEvents.bookEvent(ticketType, name);
-					// display event title/name/price
-				}
 			}
-
-		}
-		if (!foundit) {
-			System.out.println("Event not found.");
-			mainMenu();
 		}
 	}
 
@@ -285,27 +283,32 @@ public class StageC {
 		String id = sc.nextLine();
 		System.out.println("Searching events for \"" + id + "\"");
 		boolean foundit = false;
+
 		for (int i = 0; i < eventCounter; i++) {
 			if (tffEvents[i].getTitle().toLowerCase().contains(id.toLowerCase())) {
-				System.out.println("Found it!");
-				System.out.println(tffEvents[i].getTitle());
+				System.out.println("Found event: " + tffEvents[i].getTitle());
+				foundit = true;
 
-		
-		// For searching for a ticket holder name, use the 'contains' string method as
-		// the only alphabetic characters in the string will be the ticket holder name.
-		// only refunds if it is an indoor "Experience" event - rejects otherwise.
-		for (int i = 0; i < eventCounter; i++) {
-			// experience events only:
-			if (tffEvents[i] instanceof TffExperienceEvent) {
-				// then search by ticket holder name
-				System.out.println("Please enter the name to refund: ");
-				String name = sc.nextLine();
-				((TffExperienceEvent) tffEvents[i]).refundBooking(name);
-			} else {
-				System.out.println("Error: Non-refundable event.");
+				// only refund if event is an Experience event:
+				if (tffEvents[i] instanceof TffExperienceEvent) {
+					int numBookings = 0;
+					// list bookings array
+
+					System.out.println("Enter a name to refund: ");
+					String refund = sc.nextLine();
+
+					// delete string at that index - use tffExperience class
+
+				} else {
+					System.out.println("Sorry, event is non-refundable: ");
+					mainMenu();
+				}
 			}
 		}
-		// spits out the String in the 1D array in TffExperience
+		if (!foundit) {
+			System.out.println("Event not found.");
+			mainMenu();
+		}
 	}
 
 	// reusable method for scanner input, used for switch statement menus:
