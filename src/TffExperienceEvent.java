@@ -1,12 +1,11 @@
-import java.util.Arrays; // deleet mee when done
 
 // Subclass
 public class TffExperienceEvent extends TffEvent {
 
 	private int maxTickets;
-	private int numBookings = 0;
 	String[] bookings;
 
+	// constructor for TffExperienceEvent - extends TffEvent:
 	public TffExperienceEvent(String title, String description, double adult, double child, double concession,
 			int maxTickets) {
 		super(title, description, adult, child, concession);
@@ -18,23 +17,24 @@ public class TffExperienceEvent extends TffEvent {
 		return maxTickets;
 	}
 
-	public int getNumBookings() {
-		return numBookings;
-	}
-
 	public String[] getBookings() {
 		return bookings;
 	}
 
-	public void setNumBookings(int numTickets) {
-		numBookings += numTickets;
-	}
-
+	// Displays attendee names, ticket types, and price paid:
 	public void displayTickets() {
-		//System.out.println(Arrays.toString(bookings));
 		for (int i = 0; i < bookings.length; i++) {
 			if (bookings[i] != null) {
-				System.out.println(bookings[i]);
+				// Split the bookings[i] String to format as required:
+				String[] toTable = bookings[i].split(",");
+				System.out.format("%-20s %15s", toTable[0], toTable[1]);
+				if (toTable[1].contains("Adult")) {
+					System.out.printf("%4s%7.2f\n", "$", adult);
+				} else if (toTable[1].contains("Child")) {
+					System.out.printf("%4s%7.2f\n", "$", child);
+				} else if (toTable[1].contains("Concession")) {
+					System.out.printf("%4s%7.2f\n", "$", concession);
+				}
 			}
 		}
 	}
@@ -43,12 +43,10 @@ public class TffExperienceEvent extends TffEvent {
 	public boolean refundName(String targetName) {
 		for (int i = 0; i < getPurchasedTickets(); i++) {
 			if ((this.bookings[i] != null) && (this.bookings[i].toLowerCase().contains(targetName.toLowerCase()))) {
+				// Set reference of i to null to remove that booking:
 				this.bookings[i] = null;
+				// Decrement purchasedTickets:
 				purchasedTickets--;
-				// You can move up the bookings in the array to cover a 'deleted' ticket if you
-				// want - or even easier, just set that reference to null and ensure you are
-				// checking for nulls whenever you want to find an empty spot for a new string,
-				// or print out a string etc.
 				return true;
 			}
 		}
@@ -64,9 +62,9 @@ public class TffExperienceEvent extends TffEvent {
 			msg += name;
 			msg += ", ";
 			msg += ticketType;
-//			System.out.println("Printing.... " + msg);
-//			System.out.printf("%s %30s\n", name, ticketType);
-			System.out.println("Bookings for " + getTitle() + ":");
+			System.out.println();
+			System.out.println("All bookings for " + getTitle() + ":");
+			System.out.println();
 			for (int i = 0; i < maxTickets; i++) {
 				if (bookings[i] == null) {
 					bookings[i] = msg;
@@ -74,7 +72,7 @@ public class TffExperienceEvent extends TffEvent {
 				}
 			}
 		} else {
-			System.out.println("Error - sorry, no tickets remaining.");
+			System.out.println("Error - sorry, no tickets remaining for " + getTitle());
 			// Returns false if booking failed:
 			return false;
 		}
@@ -84,14 +82,14 @@ public class TffExperienceEvent extends TffEvent {
 
 	@Override
 	public void displayEvent() {
+		// Calls method from superclass:
 		super.displayEvent();
+		// Adds extra details for TffExperienceEvent only:
 		System.out.printf(" Max tickets:    %30d\n", maxTickets);
-		System.out.println(" Bookings: " + numBookings);
-
-		// array debugger view - delete me later:
-		System.out.println(Arrays.toString(bookings));
-		// deeleete meee
-
+		System.out.println(" ------");
+		System.out.println(" Guest list: ");
+		System.out.println(" ------");
 		displayTickets();
+		System.out.println();
 	}
 }

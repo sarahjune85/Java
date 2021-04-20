@@ -5,12 +5,12 @@ public class TffEvent {
 	// access variables, without a getter/setter.
 	private String title;
 	private String description;
-	private double adult;
-	private double child;
-	private double concession;
+	protected double adult;
+	protected double child;
+	protected double concession;
 	protected int purchasedTickets = 0;
 
-	// constructor
+	// constructor for TffEvent:
 	public TffEvent(String title, String description, double adult, double child, double concession) {
 		this.title = title;
 		this.description = description;
@@ -27,10 +27,6 @@ public class TffEvent {
 		return purchasedTickets;
 	}
 
-	public void setPurchasedTickets(int purchasedTickets) {
-		this.purchasedTickets = purchasedTickets;
-	}
-
 	public void displayEvent() {
 		System.out.println(" ----------------------------------------------- ");
 		System.out.printf(" Event title:  %32s\n", title);
@@ -44,26 +40,26 @@ public class TffEvent {
 	public boolean bookEvent(String ticketType, String name) {
 		// Prints ticket details and increments the count of tickets
 		// sold to indicate that a booking has occurred:
-		System.out.print(" Printing ticket......");
-
-		System.out.println();
-		System.out.println(" ----------------------------------------------- ");
-		System.out.printf(" Event: %39s \n", title);
-		System.out.println(" ----------------------------------------------- ");
-		System.out.printf(" Name:           %30s\n", name);
-		System.out.printf(" Ticket type:    %30s\n", ticketType);
+		System.out.println(" Printing ticket......");
+		System.out.println("+-------------------------------------------------+");
+		System.out.println("|------------- T F F Events Presents -------------|");
+		System.out.println("+-------------------------------------------------+");
+		System.out.printf("| Event: %40s |\n", title);
+		System.out.println("+-------------------------------------------------+");
+		System.out.printf("| Name:           %31s |\n", name);
+		System.out.printf("| Ticket type:    %31s |\n", ticketType);
 		switch (ticketType) {
 		case "Adult":
-			System.out.printf(" Price:   %31s%6.2f\n", "$", adult);
+			System.out.printf("| Price:   %32s%6.2f |\n", "$", adult);
 			break;
 		case "Child":
-			System.out.printf(" Price:   %31s%6.2f\n", "$", child);
+			System.out.printf("| Price:   %32s%6.2f |\n", "$", child);
 			break;
 		case "Concession":
-			System.out.printf(" Price:   %31s%6.2f\n", "$", concession);
+			System.out.printf("| Price:   %32s%6.2f |\n", "$", concession);
 			break;
 		}
-		System.out.println(" ----------------------------------------------- ");
+		System.out.println("+-------------------------------------------------+");
 		// return true only as we have no ticket limits:
 		purchasedTickets++;
 		return true;
