@@ -33,7 +33,8 @@ public class TffEvent {
 	public int getPurchasedTickets() {
 		return purchasedTickets;
 	}
-
+	
+	// Display event method:
 	public void displayEvent() {
 		System.out.println(" ----------------------------------------------- ");
 		System.out.printf(" Event title:  %32s\n", title);

@@ -20,10 +20,6 @@ public class TffExperienceEvent extends TffEvent {
 		this.bookings = new String[maxTickets];
 	}
 
-	public int getMaxTickets() {
-		return maxTickets;
-	}
-
 	// Displays attendee names, ticket types, and price paid:
 	public void displayTickets() {
 		for (int i = 0; i < bookings.length; i++) {
