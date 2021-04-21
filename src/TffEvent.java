@@ -1,3 +1,10 @@
+/* CPT121 / COSC2135 Programming 1 - Assignment 2
+ * Name: Sarah Ruello
+ * Student #: s3871770
+ * 
+ * This superclass contains the constructor for TffEvent.  
+ */
+ 
 // Superclass
 public class TffEvent {
 

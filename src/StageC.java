@@ -1,3 +1,13 @@
+/* CPT121 / COSC2135 Programming 1 - Assignment 2
+ * Name: Sarah Ruello
+ * Student #: s3871770
+ * 
+ * 
+ * Tff Events Booking System - StageC class: 
+ * This class instantiates the main and an array of tffEvents[] objects. These are constructed 
+ * from the two accompanying classes - superclass TffEvent & subclass TffExperienceEvent.  
+ */
+
 import java.util.Scanner;
 
 public class StageC {
@@ -232,8 +242,7 @@ public class StageC {
 						// Ticket type - switch statement.
 						// Menu will continue asking once more for ticketType & name, after numTickets
 						// has been hit. This is by design, to demonstrate the false statement returned
-						// by
-						// bookEvent().
+						// by bookEvent().
 						switch (ticketType) {
 						case "1":
 							ticketType = "Adult";

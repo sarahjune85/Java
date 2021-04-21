@@ -1,3 +1,10 @@
+/* CPT121 / COSC2135 Programming 1 - Assignment 2
+ * Name: Sarah Ruello
+ * Student #: s3871770
+ * 
+ * This class contains the constructor for TffExperienceEvent. 
+ * This is an extension of the TffEvent superclass. 
+ */
 
 // Subclass
 public class TffExperienceEvent extends TffEvent {
@@ -15,10 +22,6 @@ public class TffExperienceEvent extends TffEvent {
 
 	public int getMaxTickets() {
 		return maxTickets;
-	}
-
-	public String[] getBookings() {
-		return bookings;
 	}
 
 	// Displays attendee names, ticket types, and price paid:
