@@ -8,9 +8,6 @@
  * It contains the getter & setter methods to feed StageC and allows StageC to update values.
  * 
  */
-
-import java.util.*;
-
 class Coach {
 	private String destination;
 	private double standard;
