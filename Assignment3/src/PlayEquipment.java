@@ -9,40 +9,23 @@
 // Subclass
 public class PlayEquipment extends Item {
 
-	private double weight;
-	private double height;
-	private double width;
-	private double depth;
+	private String weight;
+	private String height;
+	private String width;
+	private String depth;
 	private double weeklyPrice;
 
-	// constructor for TffExperienceEvent - extends TffEvent:
-	public PlayEquipment(String title, String description, boolean available, double weight, double height, double width,
-			double depth, double weeklyPrice) {
+	// constructor
+	public PlayEquipment(String title, String description, boolean available, String weight, String height, String width,
+			String depth, double weeklyPrice) {
 		super(title, description, available);
 		this.weight = weight;
 		this.height = height;
 		this.width = width;
 		this.depth = depth;
-		this.weeklyPrice = weeklyPrice;				
+		this.weeklyPrice = weeklyPrice;
 	}
 
-//	// Displays attendee names, ticket types, and price paid:
-//	public void displayTickets() {
-//		for (int i = 0; i < bookings.length; i++) {
-//			if (bookings[i] != null) {
-//				// Split the bookings[i] String to format as required:
-//				String[] toTable = bookings[i].split(",");
-//				System.out.format("%-20s %15s", toTable[0], toTable[1]);
-//				if (toTable[1].contains("Adult")) {
-//					System.out.printf("%4s%7.2f\n", "$", adult);
-//				} else if (toTable[1].contains("Child")) {
-//					System.out.printf("%4s%7.2f\n", "$", child);
-//				} else if (toTable[1].contains("Concession")) {
-//					System.out.printf("%4s%7.2f\n", "$", concession);
-//				}
-//			}
-//		}
-//	}
 
 //	// search and return for booking names:
 //	public boolean refundName(String targetName) {
@@ -90,9 +73,8 @@ public class PlayEquipment extends Item {
 	public void displayItem() {
 		// Calls method from superclass:
 		super.displayItem();
-		// Adds extra details for Toy object only:
 		//System.out.printf(" Category:  %32s\n", category);
-		//System.out.printf(" Price/Week:  %32d\n", weeklyPrice);
+		System.out.printf(" Price/Week:  %32.2f\n", weeklyPrice);
 	}
 
 	@Override

@@ -15,10 +15,10 @@ public class StageD {
 	// Object member variables, only visible to StageC methods:
 	private String choice;
 	private int numToys;
-	private int itemCounter = 0;
+	private int itemCounter = 0; // probs not needed
 	private Scanner sc = new Scanner(System.in);
-	// instantiate ArrayList for use with Account / Account-subclass objects
-	ArrayList<Item> itemList = new ArrayList<Item>();
+	// instantiate ArrayList Item subclass objects:
+	private static ArrayList<Item> holdings = new ArrayList<Item>();
 
 //    Account a1 = new Account("J123", "Jill", 1000.0);      
 //    SAccount s1 = new SAccount("J124", "Jill", 3000.0, 1000.0);      
@@ -37,9 +37,10 @@ public class StageD {
 	// Stage C Constructor - instantiates the StageC class, asks for # of events to
 	// store, and calls the main menu:
 	public StageD() {
-		System.out.print("Please enter the maximum number of toys: ");
-		numToys = Integer.parseInt(sc.nextLine());
-		// this.itemList = new Item[numToys];
+		System.out.println("Initializing....No items currently listed.");
+		System.out.println();
+//		numToys = Integer.parseInt(sc.nextLine());
+//		// this.itemList = new Item[numToys];
 		mainMenu();
 	}
 
@@ -61,7 +62,8 @@ public class StageD {
 		System.out.println();
 		System.out.println(".-\"-.     .-\"-.     .-\"-.     .-\"-.     .-\"-.     .-\"-.");
 		System.out.println("     \"-.-\"     \"-.-\"     \"-.-\"     \"-.-\"     \"-.-\"     \"-.-\"");
-
+		System.out.println("Please enter a letter: ");
+		
 		do {
 			getUserInput();
 			switch (choice.toUpperCase()) {
@@ -96,37 +98,39 @@ public class StageD {
 		} while (!choice.isEmpty());
 	}
 
-	// addEvent method:
-	public boolean addItem() {
+	// addItem method:
+	public void addItem() {
 		String title;
 		String description;
 		String type;
-		String category;
-
-		// Checks to see if eventCounter has reached the maximum number of events
-		// specified at startup:
-		if (itemCounter == numToys) {
-			System.out.println("Maximum number of toys reached.");
-			mainMenu();
-			return false;
-		}
-
+		
 		System.out.print("Please enter item title: ");
 		title = sc.nextLine();
 		System.out.print("Please enter item description: ");
 		description = sc.nextLine();
-		System.out.print("What kind of item do you wish to add? ");
-		type = sc.nextLine();
+		System.out.println("What kind of item do you wish to add?: ");
 		System.out.println(" D. Dress Up");
-		System.out.println(" B. Toy");
-		System.out.println(" C. Play Equipment");
+		System.out.println(" T. Toy");
+		System.out.println(" P. Play Equipment");
+		type = sc.nextLine();
+
 
 		switch (type.toUpperCase()) {
 		case "D":
-			Item newDressUp = new DressUp(title, description, true, type, itemCounter, itemCounter);
-			itemList.add(newDressUp);
-
+			// Create new item and add to arrayList:
+			System.out.print("Please enter a costume genre: ");
+			String genre = sc.nextLine();
+			System.out.print("Please enter costume size: ");
+			int size = Integer.parseInt(sc.nextLine());
+			System.out.print("Enter number of item pieces: ");
+			int totalPieces = Integer.parseInt(sc.nextLine());
+			Item newDressUp = new DressUp(title, description, true, genre, size, totalPieces);
+			holdings.add(newDressUp);
+			listAllItems();
+			mainMenu();
+			
 		case "T":
+			String category = null;
 			System.out.print("Please choose the category of toy, [C]onstruction, [R]ide-On, or [S]port: ");
 			String input = sc.nextLine();
 			switch (input.toUpperCase()) {
@@ -146,13 +150,26 @@ public class StageD {
 			}
 
 			Item newToy = new Toy(title, description, true, category);
-			itemList.add(newToy);
-			itemCounter++;
+			holdings.add(newToy);		
+			listAllItems();
 			mainMenu();
 
 		case "P":
-			Item newPlayEquip = new PlayEquipment(title, description, true, type);
-			itemList.add(newPlayEquip);
+			System.out.print("Please enter item weight: ");
+			String weight = sc.nextLine();
+			System.out.print("Please enter item height: ");
+			String height = sc.nextLine();
+			System.out.print("Please enter item width: ");
+			String width = sc.nextLine();
+			System.out.print("Please enter item depth: ");
+			String depth = sc.nextLine();
+			System.out.print("Please enter weekly price: ");
+			double weeklyPrice = Double.parseDouble(sc.nextLine());
+			Item newPlayEquip = new PlayEquipment(title, description, true, weight, height, width,
+					depth, weeklyPrice);
+			holdings.add(newPlayEquip);
+			listAllItems();
+			mainMenu();
 
 		default:
 			System.out.println("Toy type " + type + " is invalid.");
@@ -204,16 +221,16 @@ public class StageD {
 	// view event method - searches event array by title, then displays event detail
 	// summary:
 	public void viewItem() {
-		listEventTitles();
+		//listEventTitles(); // change to list IDs/titles
 		System.out.println("Please enter the event name or partial keyword: ");
 		String id = sc.nextLine();
 		System.out.println("Searching events for \"" + id + "\"...");
 		boolean foundit = false;
 		for (int i = 0; i < itemCounter; i++) {
 			// ignore case entered by user by converting both id & getTitle() to lowercase.
-			if (itemList[i].getTitle().toLowerCase().contains(id.toLowerCase())) {
+			if (holdings[i].getTitle().toLowerCase().contains(id.toLowerCase())) {
 				System.out.println("Found it!");
-				itemList[i].displayItem();
+				holdings[i].displayItem();
 				foundit = true;
 			}
 		}
@@ -225,166 +242,155 @@ public class StageD {
 
 	// lists all event titles + their details in TffEvent[] array.
 	public void listAllItems() {
-		// Check if the first item in the tffEvents object array is null - if so, there
-		// are no events yet.
-		if (itemList[0] == null) {
-			for (int i = 0; i < itemList.length;) {
-				System.out.println("No events found");
-				break;
+
+		if (!holdings.isEmpty()) {
+			// iterate through array list elements:
+			for (int i = 0; i < holdings.size(); i++) {
+				// retrieve current element:
+				Item i1 = (holdings.get(i));
+
+				// display item details:
+				System.out.println();
+				System.out.println("Type: " + i1.getClass().getSimpleName());
+				
+				// print items:
+				i1.displayItem();
+				System.out.println();
 			}
 		} else {
-			System.out.println("All Event Details:");
-			for (int j = 0; j < itemCounter; j++) {
-				// stops array before it is empty, preventing null pointer exception:
-				if (itemList[j] != null) {
-					// Polymorphic method call will refer to either TffEvent or TffExperienceEvent
-					// depending on object:
-					itemList[j].displayItem();
-				}
-			}
+			System.out.println("No items in list.");
+			mainMenu();
 		}
+		
 	}
 
-	public void listEventTitles() {
-		// List event titles only:
-		if (itemList != null) {
-			if (itemList[0] == null) {
-				for (int i = 0; i < itemList.length;) {
-					System.out.println("No events found");
-					break;
-				}
-			} else {
-				System.out.println("Event list:");
-				System.out.println();
-				for (int j = 0; j < itemCounter; j++) {
-					// stops array before it is empty, preventing null pointer exception:
-					if (itemList[j] != null) {
-						// Polymorphic method call will refer to either TffEvent or TffExperienceEvent
-						// depending on object:
-						System.out.println(itemList[j].getTitle());
-					}
-				}
-				System.out.println();
-			}
-		}
-	}
 
 	public void hireItem() {
-		listEventTitles();
+
 		// search by event title
 		System.out.println("To add a booking, please enter the event name or keyword: ");
 		String id = sc.nextLine();
 		System.out.println("Searching events for \"" + id + "\"...");
 		System.out.println();
 		boolean foundit = false;
-
-		for (int i = 0; i < itemCounter; i++) {
-			if (itemList[i].getTitle().toLowerCase().contains(id.toLowerCase())) {
-				System.out.println("Found event: " + itemList[i].getTitle());
-				System.out.println();
-				foundit = true;
-				// Booking for TffExperienceEvent object:
-				if (itemList[i] instanceof Toy) {
-					System.out.println("Please enter # of tickets required: ");
-					int numTickets = Integer.parseInt(sc.nextLine());
-					for (int j = 0; j < numTickets; j++) {
-						System.out.println("Select a ticket type 1-3: ");
-						System.out.println("1. Adult");
-						System.out.println("2. Child");
-						System.out.println("3. Concession");
-						String ticketType = sc.nextLine();
-						// Ticket type - switch statement.
-						// Menu will continue asking once more for ticketType & name, after numTickets
-						// has been hit. This is by design, to demonstrate the false statement returned
-						// by bookEvent().
-						switch (ticketType) {
-						case "1":
-							ticketType = "Adult";
-							System.out.println("Enter a name for the booking: ");
-							String name = sc.nextLine();
-							// Polymorphic call for bookEvent():
-							if ((itemList[i].bookEvent(ticketType, name) == true)) {
-								// Cast to TffExperienceEvent to reach method not contained in superclass:
-								((Toy) itemList[i]).displayTickets();
-								System.out.println();
-								break;
-							} else {
-								System.out.println("Booking failed...Returning to main menu.");
-								mainMenu();
-							}
-						case "2":
-							ticketType = "Child";
-							System.out.println("Enter a name for the booking: ");
-							name = sc.nextLine();
-
-							if ((itemList[i].bookEvent(ticketType, name) == true)) {
-								((Toy) itemList[i]).displayTickets();
-								System.out.println();
-							} else {
-								System.out.println("Booking failed...Returning to main menu.");
-								mainMenu();
-							}
-							break;
-						case "3":
-							ticketType = "Concession";
-							System.out.println("Enter a name for the booking: ");
-							name = sc.nextLine();
-							if ((itemList[i].bookEvent(ticketType, name) == true)) {
-								((Toy) itemList[i]).displayTickets();
-								System.out.println();
-							} else {
-								System.out.println("Booking failed...Returning to main menu.");
-								mainMenu();
-							}
-							break;
-						default:
-							System.out.println("Invalid selection, try again. ");
-							break;
-						}
-					}
-
-					// Booking for TffEvent object:
-				} else {
-					System.out.println("Please enter # of tickets required: ");
-					int numTickets = Integer.parseInt(sc.nextLine());
-					int j = 0;
-					while (j < numTickets) {
-						System.out.println("Select a ticket type 1-3: ");
-						System.out.println("1. Adult");
-						System.out.println("2. Child");
-						System.out.println("3. Concession");
-						String ticketType = sc.nextLine();
-						switch (ticketType) {
-						case "1":
-							ticketType = "Adult";
-							System.out.println("Adult: Enter a name for the booking: ");
-							String name = sc.nextLine();
-							// Polymorphic call for TffEvent object:
-							itemList[i].bookEvent(ticketType, name);
-							j++;
-							break;
-						case "2":
-							ticketType = "Child";
-							System.out.println("Child: Enter a name for the booking: ");
-							name = sc.nextLine();
-							itemList[i].bookEvent(ticketType, name);
-							j++;
-							break;
-						case "3":
-							ticketType = "Concession";
-							System.out.println("Concession: Enter a name for the booking: ");
-							name = sc.nextLine();
-							itemList[i].bookEvent(ticketType, name);
-							j++;
-							break;
-						default:
-							System.out.println("Invalid selection, try again. ");
-							break;
-						}
-					}
-					mainMenu();
-				}
+		Item item = null;
+		
+		// search array list for a matching object:
+		
+		for (Item i1: holdings) {
+			
+			if (i1.getItemID().equalsIgnoreCase(targetID)) {
+				item = i1;
 			}
+		
+//
+//		for (int i = 0; i < itemCounter; i++) {
+//			if (itemList[i].getTitle().toLowerCase().contains(id.toLowerCase())) {
+//				System.out.println("Found event: " + itemList[i].getTitle());
+//				System.out.println();
+//				foundit = true;
+//				// Booking for TffExperienceEvent object:
+//				if (itemList[i] instanceof Toy) {
+//					System.out.println("Please enter # of tickets required: ");
+//					int numTickets = Integer.parseInt(sc.nextLine());
+//					for (int j = 0; j < numTickets; j++) {
+//						System.out.println("Select a ticket type 1-3: ");
+//						System.out.println("1. Adult");
+//						System.out.println("2. Child");
+//						System.out.println("3. Concession");
+//						String ticketType = sc.nextLine();
+//						// Ticket type - switch statement.
+//						// Menu will continue asking once more for ticketType & name, after numTickets
+//						// has been hit. This is by design, to demonstrate the false statement returned
+//						// by bookEvent().
+//						switch (ticketType) {
+//						case "1":
+//							ticketType = "Adult";
+//							System.out.println("Enter a name for the booking: ");
+//							String name = sc.nextLine();
+//							// Polymorphic call for bookEvent():
+//							if ((itemList[i].bookEvent(ticketType, name) == true)) {
+//								// Cast to TffExperienceEvent to reach method not contained in superclass:
+//								((Toy) itemList[i]).displayTickets();
+//								System.out.println();
+//								break;
+//							} else {
+//								System.out.println("Booking failed...Returning to main menu.");
+//								mainMenu();
+//							}
+//						case "2":
+//							ticketType = "Child";
+//							System.out.println("Enter a name for the booking: ");
+//							name = sc.nextLine();
+//
+//							if ((itemList[i].bookEvent(ticketType, name) == true)) {
+//								((Toy) itemList[i]).displayTickets();
+//								System.out.println();
+//							} else {
+//								System.out.println("Booking failed...Returning to main menu.");
+//								mainMenu();
+//							}
+//							break;
+//						case "3":
+//							ticketType = "Concession";
+//							System.out.println("Enter a name for the booking: ");
+//							name = sc.nextLine();
+//							if ((itemList[i].bookEvent(ticketType, name) == true)) {
+//								((Toy) itemList[i]).displayTickets();
+//								System.out.println();
+//							} else {
+//								System.out.println("Booking failed...Returning to main menu.");
+//								mainMenu();
+//							}
+//							break;
+//						default:
+//							System.out.println("Invalid selection, try again. ");
+//							break;
+//						}
+//					}
+//
+//					// Booking for TffEvent object:
+//				} else {
+//					System.out.println("Please enter # of tickets required: ");
+//					int numTickets = Integer.parseInt(sc.nextLine());
+//					int j = 0;
+//					while (j < numTickets) {
+//						System.out.println("Select a ticket type 1-3: ");
+//						System.out.println("1. Adult");
+//						System.out.println("2. Child");
+//						System.out.println("3. Concession");
+//						String ticketType = sc.nextLine();
+//						switch (ticketType) {
+//						case "1":
+//							ticketType = "Adult";
+//							System.out.println("Adult: Enter a name for the booking: ");
+//							String name = sc.nextLine();
+//							// Polymorphic call for TffEvent object:
+//							itemList[i].bookEvent(ticketType, name);
+//							j++;
+//							break;
+//						case "2":
+//							ticketType = "Child";
+//							System.out.println("Child: Enter a name for the booking: ");
+//							name = sc.nextLine();
+//							itemList[i].bookEvent(ticketType, name);
+//							j++;
+//							break;
+//						case "3":
+//							ticketType = "Concession";
+//							System.out.println("Concession: Enter a name for the booking: ");
+//							name = sc.nextLine();
+//							itemList[i].bookEvent(ticketType, name);
+//							j++;
+//							break;
+//						default:
+//							System.out.println("Invalid selection, try again. ");
+//							break;
+//						}
+//					}
+//					mainMenu();
+//				}
+//			}
 		}
 		if (!foundit) {
 			System.out.println("Event not found.");
@@ -393,7 +399,7 @@ public class StageD {
 	}
 
 	public void returnItem() {
-		listEventTitles();
+		//listEventTitles();
 		// search by event title:
 		System.out.println("Please enter the event name or partial keyword: ");
 		String id = sc.nextLine();
@@ -401,28 +407,28 @@ public class StageD {
 		boolean foundit = false;
 
 		for (int i = 0; i < itemCounter; i++) {
-			if (itemList[i].getTitle().toLowerCase().contains(id.toLowerCase())) {
-				System.out.println("Found event: " + itemList[i].getTitle());
+			if (holdings[i].getTitle().toLowerCase().contains(id.toLowerCase())) {
+				System.out.println("Found event: " + holdings[i].getTitle());
 				foundit = true;
 
 				// only refund if event is an Experience event:
-				if (itemList[i] instanceof Toy) {
-					System.out.println("List of " + itemList[i].getTitle() + " attendees:");
+				if (holdings[i] instanceof Toy) {
+					System.out.println("List of " + holdings[i].getTitle() + " attendees:");
 					System.out.println();
-					((Toy) itemList[i]).displayTickets();
+					((Toy) holdings[i]).displayTickets();
 					System.out.println();
 					System.out.println("Enter a name to refund: ");
 					String targetName = sc.nextLine();
 
 					// if refundName returns true - proceeds to remove name from the bookings array
 					// and displays success message:
-					if ((((Toy) itemList[i]).refundName(targetName) == true)) {
-						((Toy) itemList[i]).refundName(targetName);
+					if ((((Toy) holdings[i]).refundName(targetName) == true)) {
+						((Toy) holdings[i]).refundName(targetName);
 						System.out.println(targetName + " has been refunded.");
 						System.out.println();
-						System.out.println("List of " + itemList[i].getTitle() + " attendees:");
+						System.out.println("List of " + holdings[i].getTitle() + " attendees:");
 						System.out.println();
-						((Toy) itemList[i]).displayTickets();
+						((Toy) holdings[i]).displayTickets();
 						System.out.println();
 						mainMenu();
 					} else {

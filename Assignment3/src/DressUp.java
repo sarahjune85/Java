@@ -12,6 +12,7 @@ public class DressUp extends Item {
 	private String genre;
 	private int size;
 	private int totalPieces;
+	private double weeklyPrice;
 
 	// constructor for DressUp - extends Item:
 	public DressUp(String title, String description, boolean available, String genre, int size, int totalPieces) {
@@ -19,6 +20,8 @@ public class DressUp extends Item {
 		this.genre = genre;
 		this.size = size;
 		this.totalPieces = totalPieces;
+
+		weeklyPrice = totalPieces * 3.50;
 	}
 
 	// Displays attendee names, ticket types, and price paid:
@@ -88,7 +91,7 @@ public class DressUp extends Item {
 		System.out.printf(" Genre:  %32s\n", genre);
 		System.out.printf(" Size:  %32d\n", size);
 		System.out.printf(" Total pieces:  %32d\n", totalPieces);
-		System.out.printf(" Price/Week:  %32d\n", (totalPieces * 3.50));
+		System.out.printf(" Price/Week:  %32.2f\n", (totalPieces * 3.50));
 		System.out.printf(" Cleaning fee:  %32s\n", "$3.00");
 	}
 

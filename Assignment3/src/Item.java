@@ -13,6 +13,7 @@ public abstract class Item {
 	private String title;
 	private String description;
 	private static int itemID = 100;
+	private int toyID;
 	protected boolean available;
 
 	// constructor for Item:
@@ -20,6 +21,8 @@ public abstract class Item {
 		this.title = title;
 		this.description = description;
 		this.available = available;
+		++itemID;
+		toyID = itemID;
 	}
 
 	public String getTitle() {
@@ -29,7 +32,7 @@ public abstract class Item {
 	// Display item method:
 	public void displayItem() {
 		System.out.println(" ----------------------------------------------- ");
-		System.out.printf(" ID:  %32s\n", itemID);
+		System.out.printf(" ID:  %32d\n", toyID);
 		System.out.printf(" Item title:  %32s\n", title);
 		System.out.printf(" Description:  %32s\n", description);
 		System.out.printf(" Available for hire?:  %32s\n", available);
@@ -45,7 +48,7 @@ public abstract class Item {
 
 		return false; // if it was not hired - true if it was.
 	}
-	
+
 	// All 'concrete' subclasses of Student must
 	// implement method calculateGrade.
 	public abstract Double determinePrice();

@@ -12,15 +12,24 @@ public class Toy extends Item {
 	//private String toyType;
 	private String category;
 	private double weeklyPrice;
-	//move these to constructor
-	private final double construction = 5.45;
-	private final double rideOn = 8.00;
-	private final double sport = 6.50;
+//	//move these to constructor
+//	private final double construction = 5.45;
+//	private final double rideOn = 8.00;
+//	private final double sport = 6.50;
 
 	// constructor for Toy - extends Item:
 	public Toy(String title, String description, boolean available, String category) {
 		super(title, description, available);
 		this.category = category;
+		
+		if (category == "Contruction") {
+			weeklyPrice = 5.45;
+		} else if (category == "RideOn") {
+			weeklyPrice = 8.00;
+		}  else if (category == "Sport") {
+			weeklyPrice = 6.50;
+		} 
+				
 	}
 
 //	// Displays attendee names, ticket types, and price paid:
@@ -88,7 +97,7 @@ public class Toy extends Item {
 		super.displayItem();
 		// Adds extra details for Toy object only:
 		System.out.printf(" Category:  %32s\n", category);
-		System.out.printf(" Price/Week:  %32d\n", weeklyPrice);
+		System.out.printf(" Price/Week:  %32.2f\n", weeklyPrice);
 	}
 
 	@Override
