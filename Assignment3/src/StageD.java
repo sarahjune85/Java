@@ -247,7 +247,6 @@ public class StageD {
 		// list all items & their IDs
 		System.out.println("Item list:");
 		System.out.println(" ---------");
-		System.out.println();
 		for (Item a : holdings) {
 			String title = a.getTitle();
 			int toyID = a.getToyID();
