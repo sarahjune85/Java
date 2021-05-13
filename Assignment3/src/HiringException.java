@@ -1,8 +1,8 @@
 
+@SuppressWarnings("serial")
 public class HiringException extends Exception {
 
-	public HiringException() {
-		// TODO Auto-generated constructor stub
+	public HiringException(String message) {
+		super(message);
 	}
-
 }

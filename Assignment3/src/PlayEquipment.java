@@ -1,21 +1,24 @@
-/* CPT121 / COSC2135 Programming 1 - Assignment 2
+import java.io.PrintWriter;
+
+/* CPT121 / COSC2135 Programming 1 - Assignment 3
  * Name: Sarah Ruello
  * Student #: s3871770
  * 
- * This class contains the constructor for TffExperienceEvent. 
- * This is an extension of the TffEvent superclass. 
+ * This class contains the constructor for PlayEquipment Objects. 
+ * This is an extension of the Item superclass, and is final.
  */
 
-// Subclass
-public class PlayEquipment extends Item {
+// Subclass of Item:
+public final class PlayEquipment extends Item {
 
 	private String weight;
 	private String height;
 	private String width;
 	private String depth;
 	private double weeklyPrice;
+	private double totalPrice;
 
-	// constructor
+	// Constructor for PlayEquipment:
 	public PlayEquipment(String title, String description, boolean available, String weight, String height, String width,
 			String depth, double weeklyPrice) {
 		super(title, description, available);
@@ -27,59 +30,34 @@ public class PlayEquipment extends Item {
 	}
 
 
-//	// search and return for booking names:
-//	public boolean refundName(String targetName) {
-//		for (int i = 0; i < getPurchasedTickets(); i++) {
-//			if ((this.bookings[i] != null) && (this.bookings[i].toLowerCase().contains(targetName.toLowerCase()))) {
-//				// Set reference of i to null to remove that booking:
-//				this.bookings[i] = null;
-//				// Decrement purchasedTickets:
-//				purchasedTickets--;
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-
-//	@Override
-//	public boolean bookEvent(String ticketType, String name) {
-//		if ((weight - getPurchasedTickets()) > 0) {
-//			// Calls method from superclass:
-//			super.bookEvent(ticketType, name);
-//			String msg = " ";
-//			msg += name;
-//			msg += ", ";
-//			msg += ticketType;
-//			System.out.println();
-//			System.out.println("All bookings for " + getTitle() + ":");
-//			System.out.println();
-//			for (int i = 0; i < weight; i++) {
-//				if (bookings[i] == null) {
-//					bookings[i] = msg;
-//					break;
-//				}
-//			}
-//		} else {
-//			System.out.println("Error - sorry, no tickets remaining for " + getTitle());
-//			// Returns false if booking failed:
-//			return false;
-//		}
-//		// Returns true if the booking is performed.
-//		return true;
-//	}
-
+	// Object is responsible for writing its own data - using inheritance:
+	@Override
+	public void writeData(PrintWriter pw) {
+		super.writeData(pw);
+		pw.println(this.weight);
+		pw.println(this.height);
+		pw.println(this.width);
+		pw.println(this.depth);
+		pw.println(this.weight);
+		pw.println(this.weeklyPrice);
+	}
 
 	@Override
 	public void displayItem() {
 		// Calls method from superclass:
 		super.displayItem();
-		//System.out.printf(" Category:  %32s\n", category);
-		System.out.printf(" Price/Week:  %32.2f\n", weeklyPrice);
+		System.out.printf(" Price/Week   :  %.2f\n", weeklyPrice);
+		System.out.println(" ------------ ");
+		if (!available) {
+			System.out.printf(" On loan to   :  %s for %d weeks\n", customerID, numWeeks);
+			System.out.printf(" Cost         :  %.2f\n", determinePrice());
+			System.out.println(" ----------------------------------------------- ");
+		}
 	}
 
 	@Override
 	public Double determinePrice() {
-		// TODO Auto-generated method stub
-		return null;
+		this.totalPrice = weeklyPrice * numWeeks;
+		return totalPrice;
 	}
 }
