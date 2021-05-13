@@ -47,7 +47,7 @@ public final class PlayEquipment extends Item {
 		// Calls method from superclass:
 		super.displayItem();
 		System.out.printf(" Price/Week   :  %.2f\n", weeklyPrice);
-		System.out.println(" ------------ ");
+		System.out.println(" -------------- ");
 		if (!available) {
 			System.out.printf(" On loan to   :  %s for %d weeks\n", customerID, numWeeks);
 			System.out.printf(" Cost         :  %.2f\n", determinePrice());

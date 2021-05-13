@@ -48,7 +48,7 @@ public final class Toy extends Item {
 		// Adds extra details for Toy object only:
 		System.out.printf(" Category     :  %s\n", category);
 		System.out.printf(" Price/Week   :  %.2f\n", weeklyPrice);
-		System.out.println(" ------------ ");
+		System.out.println(" -------------- ");
 		if (!available) {
 			System.out.printf(" On loan to   :  %s for %d weeks\n", customerID, numWeeks);
 			System.out.printf(" Total cost   :  %.2f\n", determinePrice());

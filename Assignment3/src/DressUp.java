@@ -58,7 +58,7 @@ public final class DressUp extends Item {
 		System.out.printf(" # pieces     :  %d\n", totalPieces);
 		System.out.printf(" Price/Week   :  %.2f\n", weeklyPrice);
 		System.out.printf(" Cleaning fee :  %.2f\n", laundryFee);
-		System.out.println(" ------------ ");
+		System.out.println(" -------------- ");
 		if (!available) {
 			System.out.printf(" On loan to   :  %s for %d weeks\n", customerID, numWeeks);
 			System.out.printf(" Total cost   :  %.2f\n", this.determinePrice());

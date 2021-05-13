@@ -91,6 +91,7 @@ public abstract class Item {
 		} else {
 			available = true;
 			System.out.println("Item " + toyID + " returned by customer ID# " + customerID);
+			System.out.println();
 			customerID = null;
 			numWeeks = 0;
 		}

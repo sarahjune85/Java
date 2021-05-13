@@ -83,13 +83,14 @@ public class StageD {
 				break;
 			default:
 				System.out.println("Invalid selection, try again. ");
+				System.out.println();
 				mainMenu();
 				break;
 			}
 		} while (!choice.isEmpty());
 	}
 
-	// addItem method:
+	// Add item method:
 	private void addItem() {
 		String title;
 		String description;
@@ -136,7 +137,7 @@ public class StageD {
 			}
 			System.out.println();
 			mainMenu();
-			
+
 		case "T":
 			// Try/Catch here for the wrong letter entered - Toy item only:
 			try {
@@ -194,18 +195,10 @@ public class StageD {
 		}
 	}
 
-	// view item method - searches arrayList by toyID, then displays item detail
+	// View item method - searches arrayList by toyID, then displays item detail
 	// summary:
 	private void viewItem() {
-		System.out.println("Item list:");
-		System.out.println(" ---------");
-		for (Item a : holdings) {
-			String title = a.getTitle();
-			int toyID = a.getToyID();
-			System.out.println(toyID + ": " + title);
-		}
-		System.out.println(" ---------");
-		System.out.println();
+		simpleList();
 		System.out.println("Please enter the item ID: ");
 		int targetID = Integer.parseInt(sc.nextLine());
 		System.out.println("Displaying details for \"" + targetID + "\"...");
@@ -225,7 +218,7 @@ public class StageD {
 		}
 	}
 
-	// lists all items + their details in holdings arrayList:
+	// Lists all items in holdings arrayList + their complete details:
 	private void listAllItems() {
 		if (!holdings.isEmpty()) {
 			// iterate through array list elements:
@@ -243,8 +236,8 @@ public class StageD {
 		}
 	}
 
-	private void hireItem() {
-		// list all items & their IDs
+	// List all items in holdings - titles & IDs only:
+	private void simpleList() {
 		System.out.println("Item list:");
 		System.out.println(" ---------");
 		for (Item a : holdings) {
@@ -254,6 +247,11 @@ public class StageD {
 		}
 		System.out.println(" ---------");
 		System.out.println();
+	}
+
+	// Hire item method:
+	private void hireItem() {
+		simpleList();
 		System.out.println("To hire an item, please enter the item ID: ");
 		int targetID = Integer.parseInt(sc.nextLine());
 		boolean foundit = false;
@@ -270,8 +268,11 @@ public class StageD {
 					int numWeeks = Integer.parseInt(sc.nextLine());
 					i1.hireItem(customerID, numWeeks);
 					System.out.printf("Total price: %.2f \n", i1.determinePrice());
+					System.out.println();
 				} catch (HiringException e) {
 					System.out.println("Item loan failed:");
+					System.out.println(e.getMessage());
+					System.out.println();
 				}
 			}
 		}
@@ -283,18 +284,10 @@ public class StageD {
 
 	// Return item method:
 	private void returnItem() {
-		// list all items & their IDs
-		System.out.println("Item list:");
-		for (Item a : holdings) {
-			String title = a.getTitle();
-			int toyID = a.getToyID();
-			System.out.println(toyID + ": " + title);
-		}
-
+		simpleList();
 		System.out.println("To return an item, please enter the item ID: ");
 		int targetID = Integer.parseInt(sc.nextLine());
 		boolean foundit = false;
-
 		// search array list for a matching object using foreach loop:
 		for (Item i1 : holdings) {
 			if (i1.getToyID() == targetID) {
@@ -303,14 +296,15 @@ public class StageD {
 				try {
 					// uses Item's returnItem() method to switch object's loan status:
 					i1.returnItem();
-				// Throws Hiring exception and displays message when user tries to return an
-				// item not on loan:
-				} catch (HiringException e) {
-					System.out.println("Item return failed: not on loan.");
+					// Throws Hiring exception and displays message when user tries to return an
+					// item not on loan:
+				} catch (HiringException e) {					
+					System.out.println("Item return failed: ");
+					System.out.println(e.getMessage());
+					System.out.println();
 				}
 			}
 		}
-
 		// If ID is not found, boolean remains false and error is displayed:
 		if (!foundit) {
 			System.out.println("ID not found.");
