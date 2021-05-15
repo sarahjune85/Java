@@ -40,7 +40,7 @@ public final class PlayEquipment extends Item {
 		this.weeklyPrice = Double.parseDouble(sc.nextLine());
 	}
 
-	// Object is responsible for writing its own data - using inheritance:
+	// Object is responsible for writing its own data - using inheritance & dynamic polymorphism:
 	@Override
 	public void writeData(PrintWriter pw) {
 		super.writeData(pw);
@@ -55,17 +55,20 @@ public final class PlayEquipment extends Item {
 	public void displayItem() {
 		// Calls method from superclass:
 		super.displayItem();
+		System.out.printf(" Weight (kg)  :  %s\n", weight);
+		System.out.printf(" Height (cm)  :  %s\n", height);
+		System.out.printf(" Width  (cm)  :  %s\n", width);
+		System.out.printf(" Depth  (cm)  :  %s\n", depth);
 		System.out.printf(" Price/Week   :  $%.2f\n", weeklyPrice);
-		
-		//TODO fix up my display for all specs
-		//System.out.println(" -------------- ");
+
 		if (!available) {
 			System.out.printf(" On loan to   :  %s for %d weeks\n", customerID, numWeeks);
 			System.out.printf(" Cost         :  $%.2f\n", determinePrice());
-			System.out.println(" ----------------------------------------------- ");
 		}
 	}
-
+	
+	// Fully implemented abstract method from Item.
+	// Calculates total cost to current customer:
 	@Override
 	public Double determinePrice() {
 		this.totalPrice = weeklyPrice * numWeeks;

@@ -38,7 +38,7 @@ public final class DressUp extends Item {
 		this.laundryFee = Double.parseDouble(sc.nextLine());
 	}
 
-	// Object is responsible for writing its own data - using inheritance:
+	// Object is responsible for writing its own data - using inheritance & dynamic polymorphism:
 	@Override
 	public void writeData(PrintWriter pw) {
 		super.writeData(pw);
@@ -49,6 +49,7 @@ public final class DressUp extends Item {
 		pw.println(this.laundryFee);
 	}
 
+	// Display method for DressUp, uses inheritance & dynamic polymorphism:
 	@Override
 	public void displayItem() {
 		super.displayItem();
@@ -58,15 +59,13 @@ public final class DressUp extends Item {
 		System.out.printf(" # pieces     :  %d\n", totalPieces);
 		System.out.printf(" Price/Week   :  $%.2f\n", weeklyPrice);
 		System.out.printf(" Cleaning fee :  $%.2f\n", laundryFee);
-		//System.out.println(" -------------- ");
 		if (!available) {
 			System.out.printf(" On loan to   :  %s for %d weeks\n", customerID, numWeeks);
 			System.out.printf(" Total cost   :  $%.2f\n", this.determinePrice());
-			System.out.println(" ----------------------------------------------- ");
 		}
 	}
 	
-	// Overridden abstract method from Item.
+	// Fully implemented abstract method from Item.
 	// Calculates total cost to current customer, including laundry fee:
 	@Override
 	public Double determinePrice() {

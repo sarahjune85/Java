@@ -1,4 +1,4 @@
-/* CPT121 / COSC2135 Programming 1 - Assignment 2
+/* CPT121 / COSC2135 Programming 1 - Assignment 3
  * Name: Sarah Ruello
  * Student #: s3871770
  * 
@@ -10,7 +10,6 @@
  * If not found, program continues with empty list. 
  */
 
-//import java.io.FileNotFoundException;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
@@ -44,9 +43,6 @@ public class StageD {
 		System.out.println(" C. Display all items");
 		System.out.println(" D. Hire item");
 		System.out.println(" E. Return item");
-		// delete when done:
-		// TODO
-		System.out.println(" T. Reset Toys = delete me when done");
 		System.out.println(" X. Exit");
 		System.out.println();
 		System.out.println("Please enter a letter: ");
@@ -72,12 +68,6 @@ public class StageD {
 				break;
 			case "E":
 				returnItem();
-				mainMenu();
-				break;
-			// deleteee meee when done:
-			// TODO
-			case "T":
-				testingToys();
 				mainMenu();
 				break;
 			case "X":
@@ -175,13 +165,13 @@ public class StageD {
 			mainMenu();
 
 		case "P":
-			System.out.print("Please enter item weight: ");
+			System.out.print("Please enter item weight in kg: ");
 			String weight = sc.nextLine();
-			System.out.print("Please enter item height: ");
+			System.out.print("Please enter item height in cm: ");
 			String height = sc.nextLine();
-			System.out.print("Please enter item width: ");
+			System.out.print("Please enter item width in cm: ");
 			String width = sc.nextLine();
-			System.out.print("Please enter item depth: ");
+			System.out.print("Please enter item depth in cm: ");
 			String depth = sc.nextLine();
 			System.out.print("Please enter weekly price: ");
 			double weeklyPrice = Double.parseDouble(sc.nextLine());
@@ -197,6 +187,7 @@ public class StageD {
 			mainMenu();
 		default:
 			System.out.println("Item type " + choice + " is invalid.");
+			System.out.println();
 			mainMenu();
 			break;
 		}
@@ -254,7 +245,7 @@ public class StageD {
 			System.out.println(" ------------- S T A T I S T I C S ------------- ");
 			System.out.printf(" | %24s %3d %16s\n", "Inventory count :", holdings.size(), "|");
 			System.out.printf(" | %24s %3d %16s\n", "Total on loan :", hireCount, "|");
-			System.out.printf(" | %24s %3s%5.2f %10s\n", "Forecast income :", "$", income, "|");
+			System.out.printf(" | %24s %3s%-7.2f %9s\n", "Forecast income :", "$", income, "|");
 			System.out.println(" ----------------------------------------------- ");
 			System.out.println();
 		} else {
@@ -345,8 +336,8 @@ public class StageD {
 				try {
 					// uses Item's returnItem() method to switch object's loan status:
 					i1.returnItem();
-					// Throws Hiring exception and displays message when user tries to return an
-					// item not on loan:
+					// returnItem() throws Hiring exception and displays message when user tries to return an
+					// item not on loan, caught here:
 				} catch (HiringException e) {
 					System.out.println("Item return failed: ");
 					System.out.println(e.getMessage());
@@ -389,10 +380,11 @@ public class StageD {
 		Scanner fileScanner = null;
 		try {
 			fileScanner = new Scanner(new FileReader("data.txt"));
+			// Scanner parses data.txt line by line:
 			while (fileScanner.hasNext()) {
 				temp = null;
 				tag = fileScanner.nextLine();
-
+				// if Scanner's nextLine() finds a class tag, creates a new object:
 				if (tag.equals("DressUp")) {
 					temp = new DressUp(fileScanner);
 				} else if (tag.equals("Toy")) {
@@ -400,33 +392,14 @@ public class StageD {
 				} else if (tag.equals("PlayEquipment")) {
 					temp = new PlayEquipment(fileScanner);
 				}
-
+				// Adds new object to ArrayList:
 				holdings.add(temp);
-
 			}
 			System.out.println("Data found - loading saved items...");
 		} catch (FileNotFoundException e) {
+			// When no data.txt file is located on startup:
 			System.out.println("File not found. Starting in default state");
 		}
-	}
-
-	// Test method:
-	private void testingToys() {
-		// clear all:
-		for (Item a : holdings) {
-			holdings.remove(a);
-		}
-
-		Item newDressUp = new DressUp("Party Dress", "Party on Garth", true, "Girly", 5, 4);
-		holdings.add(newDressUp);
-
-		Item newToy = new Toy("Big Truck", "Truck for trucking", true, "RideOn");
-		holdings.add(newToy);
-
-		Item newPlayEquip = new PlayEquipment("Yellow Slide", "Big and Yellow", true, "234", "432", "345", "543",
-				34.50);
-		holdings.add(newPlayEquip);
-
 	}
 
 	// reusable method for scanner input, used for switch statement menus:

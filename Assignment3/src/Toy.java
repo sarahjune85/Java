@@ -22,6 +22,8 @@ public final class Toy extends Item {
 		super(title, description, available);
 		this.category = category;
 
+		// Toy constructor will throw an exception if an invalid toy type is entered.
+		// This is caught in StageD:
 		if (category == "Contruction") {
 			weeklyPrice = 5.45;
 		} else if (category == "RideOn") {
@@ -30,7 +32,7 @@ public final class Toy extends Item {
 			weeklyPrice = 6.50;
 		} else {
 			itemID--;
-			throw new IllegalArgumentException("Category must be C, R or S");			
+			throw new IllegalArgumentException("Category must be C, R or S");
 		}
 	}
 
@@ -41,7 +43,7 @@ public final class Toy extends Item {
 		this.weeklyPrice = Double.parseDouble(sc.nextLine());
 	}
 
-	// We are taking advantage of inheritance - object is now responsible for writing its own data
+	// Object is responsible for writing its own data - using inheritance & dynamic polymorphism:
 	@Override
 	public void writeData(PrintWriter pw) {
 		super.writeData(pw);
@@ -56,14 +58,14 @@ public final class Toy extends Item {
 		// Adds extra details for Toy object only:
 		System.out.printf(" Category     :  %s\n", category);
 		System.out.printf(" Price/Week   :  $%.2f\n", weeklyPrice);
-		//System.out.println(" -------------- ");
 		if (!available) {
 			System.out.printf(" On loan to   :  %s for %d weeks\n", customerID, numWeeks);
 			System.out.printf(" Total cost   :  $%.2f\n", determinePrice());
-			System.out.println(" ----------------------------------------------- ");
 		}
 	}
 
+	// Fully implemented abstract method from Item.
+	// Calculates total cost to current customer:
 	@Override
 	public Double determinePrice() {
 		this.totalPrice = weeklyPrice * numWeeks;

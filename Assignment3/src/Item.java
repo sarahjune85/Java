@@ -12,8 +12,11 @@ import java.util.Scanner;
 // Superclass
 public abstract class Item {
 
-	// protected allows subclass to directly
-	// access variables, without a getter/setter.
+	// protected allows subclasses to directly access variables, without a
+	// getter/setter.
+
+	// Static variable for itemID - static ensures that only 1 instance of this integer is
+	// created and this instance is shared across all objects, enabling a consistent count of Items.
 	protected static int itemID = 100;
 	protected int toyID;
 	private String title;
@@ -31,48 +34,51 @@ public abstract class Item {
 		toyID = itemID;
 	}
 
-	//Object reads its own data from a file, using Scanner and parsing line by line:
+	// Object reads its own data from a text file, using Scanner and parsing each
+	// line into the appropriate variable:
 	public Item(Scanner sc) {
 		this.toyID = Integer.parseInt(sc.nextLine());
 		itemID++;
 		this.title = sc.nextLine();
 		this.description = sc.nextLine();
 		this.available = Boolean.parseBoolean(sc.nextLine());
-		
 		if (!available) {
 			this.customerID = sc.nextLine();
-			this.numWeeks = Integer.parseInt(sc.nextLine());					
+			this.numWeeks = Integer.parseInt(sc.nextLine());
 		}
 	}
-	
-	// The object is responsible for writing its own data:
+
+	// The object writes its own data using PrintWriter, using a text output stream:
 	public void writeData(PrintWriter pw) {
-		// getSimpleName gets the name of the class of the object, which will be used to instantiate the object from file:
+		// getSimpleName gets the name of the class of the object, which will be used to
+		// instantiate the object from file:
 		pw.println(this.getClass().getSimpleName());
 		pw.println(this.toyID);
 		pw.println(this.title);
 		pw.println(this.description);
 		pw.println(this.available);
-		
+		// If item is on loan, this method will also write the loan details to file:
 		if (!available) {
 			pw.println(this.customerID);
-			pw.println(this.numWeeks);					
+			pw.println(this.numWeeks);
 		}
 	}
 
+	// Getter for title - used to print Item titles in StageD:
 	public String getTitle() {
 		return title;
 	}
 
+	// Getter for toyID - used by StageD to retrieve toys by ID:
 	public int getToyID() {
 		return toyID;
 	}
 
+	// Getter for loan status:
 	public boolean isAvailable() {
 		return available;
 	}
 
-	//TODO - change true/false to Yes/No
 	// Display item method:
 	public void displayItem() {
 		System.out.println(" ----------------------------------------------- ");
@@ -80,9 +86,15 @@ public abstract class Item {
 		System.out.println(" Type         :  " + getClass().getSimpleName());
 		System.out.printf(" Item title   :  %s\n", title);
 		System.out.printf(" Description  :  %s\n", description);
-		System.out.printf(" Available?   :  %s\n", available);
+		if (!available) {
+			System.out.printf(" Available?   :  %s\n", "No");
+		} else {
+			System.out.printf(" Available?   :  %s\n", "Yes");
+		}
 	}
 
+	// Hire item method - if item is already on loan, throws a HiringException which
+	// is caught in StageD.
 	public void hireItem(String customerID, int numWeeks) throws HiringException {
 		this.customerID = customerID;
 		this.numWeeks = numWeeks;
@@ -103,6 +115,8 @@ public abstract class Item {
 		}
 	}
 
+	// Return item method - if item is NOT on loan, throws a HiringException which
+	// is caught in StageD:
 	public void returnItem() throws HiringException {
 		if (available) {
 			throw new HiringException("Item is not on loan.");
