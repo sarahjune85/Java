@@ -1,4 +1,5 @@
 import java.io.PrintWriter;
+import java.util.Scanner;
 
 /* CPT121 / COSC2135 Programming 1 - Assignment 3
  * Name: Sarah Ruello
@@ -28,17 +29,24 @@ public final class Toy extends Item {
 		} else if (category == "Sport") {
 			weeklyPrice = 6.50;
 		} else {
-			decreaseID();
+			itemID--;
 			throw new IllegalArgumentException("Category must be C, R or S");			
 		}
 	}
 
+	// Using inheritance to build upon Item's file reading method:
+	public Toy(Scanner sc) {
+		super(sc);
+		this.category = sc.nextLine();
+		this.weeklyPrice = Double.parseDouble(sc.nextLine());
+	}
 
 	// We are taking advantage of inheritance - object is now responsible for writing its own data
 	@Override
 	public void writeData(PrintWriter pw) {
 		super.writeData(pw);
 		pw.println(this.category);
+		pw.println(this.weeklyPrice);
 	}
 
 	@Override
@@ -47,11 +55,11 @@ public final class Toy extends Item {
 		super.displayItem();
 		// Adds extra details for Toy object only:
 		System.out.printf(" Category     :  %s\n", category);
-		System.out.printf(" Price/Week   :  %.2f\n", weeklyPrice);
-		System.out.println(" -------------- ");
+		System.out.printf(" Price/Week   :  $%.2f\n", weeklyPrice);
+		//System.out.println(" -------------- ");
 		if (!available) {
 			System.out.printf(" On loan to   :  %s for %d weeks\n", customerID, numWeeks);
-			System.out.printf(" Total cost   :  %.2f\n", determinePrice());
+			System.out.printf(" Total cost   :  $%.2f\n", determinePrice());
 			System.out.println(" ----------------------------------------------- ");
 		}
 	}

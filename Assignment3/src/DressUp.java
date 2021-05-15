@@ -28,7 +28,7 @@ public final class DressUp extends Item {
 		this.weeklyPrice = totalPieces * 3.50;
 	}
 
-	// Notice we are taking advantage of inheritance
+	// Using inheritance to build upon Item's file reading method:
 	public DressUp(Scanner sc) {
 		super(sc);
 		this.genre = sc.nextLine();
@@ -56,12 +56,12 @@ public final class DressUp extends Item {
 		System.out.printf(" Genre        :  %s\n", genre);
 		System.out.printf(" Size         :  %d\n", size);
 		System.out.printf(" # pieces     :  %d\n", totalPieces);
-		System.out.printf(" Price/Week   :  %.2f\n", weeklyPrice);
-		System.out.printf(" Cleaning fee :  %.2f\n", laundryFee);
-		System.out.println(" -------------- ");
+		System.out.printf(" Price/Week   :  $%.2f\n", weeklyPrice);
+		System.out.printf(" Cleaning fee :  $%.2f\n", laundryFee);
+		//System.out.println(" -------------- ");
 		if (!available) {
 			System.out.printf(" On loan to   :  %s for %d weeks\n", customerID, numWeeks);
-			System.out.printf(" Total cost   :  %.2f\n", this.determinePrice());
+			System.out.printf(" Total cost   :  $%.2f\n", this.determinePrice());
 			System.out.println(" ----------------------------------------------- ");
 		}
 	}

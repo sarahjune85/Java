@@ -14,7 +14,7 @@ public abstract class Item {
 
 	// protected allows subclass to directly
 	// access variables, without a getter/setter.
-	private static int itemID = 100;
+	protected static int itemID = 100;
 	protected int toyID;
 	private String title;
 	private String description;
@@ -31,39 +31,48 @@ public abstract class Item {
 		toyID = itemID;
 	}
 
-	// It is good object-oriented programming to have an object responsible
-	// for reading it's own data from file.
-	// The argument for this constructor is a stream (e.g. a file) which
-	// the object can access to obtain its data.
+	//Object reads its own data from a file, using Scanner and parsing line by line:
 	public Item(Scanner sc) {
 		this.toyID = Integer.parseInt(sc.nextLine());
+		itemID++;
 		this.title = sc.nextLine();
 		this.description = sc.nextLine();
 		this.available = Boolean.parseBoolean(sc.nextLine());
+		
+		if (!available) {
+			this.customerID = sc.nextLine();
+			this.numWeeks = Integer.parseInt(sc.nextLine());					
+		}
+	}
+	
+	// The object is responsible for writing its own data:
+	public void writeData(PrintWriter pw) {
+		// getSimpleName gets the name of the class of the object, which will be used to instantiate the object from file:
+		pw.println(this.getClass().getSimpleName());
+		pw.println(this.toyID);
+		pw.println(this.title);
+		pw.println(this.description);
+		pw.println(this.available);
+		
+		if (!available) {
+			pw.println(this.customerID);
+			pw.println(this.numWeeks);					
+		}
 	}
 
 	public String getTitle() {
 		return title;
 	}
 
-	public boolean getAvailable() {
-		return available;
-	}
-
-	public void setAvailable(boolean available) {
-		this.available = available;
-	}
-
 	public int getToyID() {
 		return toyID;
 	}
 
-	// Method used to reduce itemID count down by 1, after Toy constructor exception
-	// is thrown:
-	public void decreaseID() {
-		Item.itemID--;
+	public boolean isAvailable() {
+		return available;
 	}
 
+	//TODO - change true/false to Yes/No
 	// Display item method:
 	public void displayItem() {
 		System.out.println(" ----------------------------------------------- ");
@@ -81,7 +90,16 @@ public abstract class Item {
 			throw new HiringException("Item is already on loan.");
 		} else {
 			available = false;
-			System.out.println("Item " + toyID + " loaned for " + numWeeks + " weeks to ID# " + customerID);
+			System.out.println("Item " + toyID + " successfully loaned.");
+			System.out.println();
+			System.out.println("Receipt: ");
+			System.out.println(" ----------------------------------------------- ");
+			System.out.printf(" ID           :  %d\n", toyID);
+			System.out.printf(" Item title   :  %s\n", title);
+			System.out.printf(" On loan to   :  %s\n", customerID);
+			System.out.printf(" For          :  %d weeks\n", numWeeks);
+			System.out.printf(" Total cost   :  $%.2f\n", determinePrice());
+			System.out.println(" ----------------------------------------------- ");
 		}
 	}
 
@@ -101,13 +119,4 @@ public abstract class Item {
 	// this method, each one will contain its own specific body:
 	public abstract Double determinePrice();
 
-	// The object is responsible for writing its own data to a stream (e.g. file)
-	public void writeData(PrintWriter pw) {
-		// getSimpleName gets the name of the class of the object
-		pw.println(this.getClass().getSimpleName());
-		pw.println(this.toyID);
-		pw.println(this.title);
-		pw.println(this.description);
-		pw.println(this.available);
-	}
 }

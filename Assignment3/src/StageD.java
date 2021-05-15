@@ -3,9 +3,11 @@
  * Student #: s3871770
  * 
  * 
- * Tff Events Booking System - StageD class: 
- * This class instantiates the main and an array of tffEvents[] objects. These are constructed 
- * from the two accompanying classes - superclass TffEvent & subclass TffExperienceEvent.  
+ * ChildzPlay Toy Hire System - StageD class: 
+ * This class instantiates the main and an arrayList objects. These objects are constructed 
+ * from the 3 subclasses, DressUp, Toy & PlayEquipment - all are an implementation of the abstract class Item. 
+ * Upon program start, StageD will check for a data.txt file to load previously entered Items & their details.
+ * If not found, program continues with empty list. 
  */
 
 //import java.io.FileNotFoundException;
@@ -20,12 +22,12 @@ public class StageD {
 	private String choice;
 	private Scanner sc = new Scanner(System.in);
 
-	// instantiate ArrayList Item class objects:
+	// instantiate ArrayList of Item class objects:
 	private static ArrayList<Item> holdings = new ArrayList<Item>();
 
 	// Stage D Constructor:
 	private StageD() {
-		System.out.println("Initializing....No items currently listed.");
+		loadArray();
 		System.out.println();
 		mainMenu();
 	}
@@ -36,13 +38,14 @@ public class StageD {
 		System.out.println(".-\"-.     .-\"-.     .-\"-.     .-\"-.     .-\"-. ");
 		System.out.printf("%37s\n", "~~ ChildzPlay Toy Hire Menu ~~");
 		System.out.println("     \"-.-\"     \"-.-\"     \"-.-\"     \"-.-\"   ");
-
+		System.out.println();
 		System.out.println(" A. Add item");
 		System.out.println(" B. Display item");
 		System.out.println(" C. Display all items");
 		System.out.println(" D. Hire item");
 		System.out.println(" E. Return item");
 		// delete when done:
+		// TODO
 		System.out.println(" T. Reset Toys = delete me when done");
 		System.out.println(" X. Exit");
 		System.out.println();
@@ -72,6 +75,7 @@ public class StageD {
 				mainMenu();
 				break;
 			// deleteee meee when done:
+			// TODO
 			case "T":
 				testingToys();
 				mainMenu();
@@ -132,6 +136,7 @@ public class StageD {
 			holdings.add(newDressUp);
 			for (Item i1 : holdings) {
 				if (i1.getTitle().equalsIgnoreCase(title)) {
+					System.out.println();
 					System.out.println("Added item " + i1.getToyID() + ": " + title);
 				}
 			}
@@ -157,6 +162,7 @@ public class StageD {
 				holdings.add(newToy);
 				for (Item i1 : holdings) {
 					if (i1.getTitle().equalsIgnoreCase(title)) {
+						System.out.println();
 						System.out.println("Added item " + i1.getToyID() + ": " + title);
 					}
 				}
@@ -183,6 +189,7 @@ public class StageD {
 			holdings.add(newPlayEquip);
 			for (Item i1 : holdings) {
 				if (i1.getTitle().equalsIgnoreCase(title)) {
+					System.out.println();
 					System.out.println("Added item " + i1.getToyID() + ": " + title);
 				}
 			}
@@ -199,9 +206,15 @@ public class StageD {
 	// summary:
 	private void viewItem() {
 		simpleList();
+		int targetID = -1;
+		try {
 		System.out.println("Please enter the item ID: ");
-		int targetID = Integer.parseInt(sc.nextLine());
+		targetID = Integer.parseInt(sc.nextLine());
 		System.out.println("Displaying details for \"" + targetID + "\"...");
+		} catch (NumberFormatException e) {
+			System.out.println("Not a valid ID");
+		}
+
 		boolean foundit = false;
 
 		// search array list for a matching object using foreach loop:
@@ -214,22 +227,36 @@ public class StageD {
 		}
 		if (!foundit) {
 			System.out.println("Item not found.");
+			System.out.println();
 			mainMenu();
 		}
 	}
 
 	// Lists all items in holdings arrayList + their complete details:
 	private void listAllItems() {
+		int hireCount = 0;
+		double income = 0;
 		if (!holdings.isEmpty()) {
 			// iterate through array list elements:
 			for (int i = 0; i < holdings.size(); i++) {
-				// retrieve current element and store in a temporary Item, i1:
+				// retrieves current element and store in a temporary Item, i1:
 				Item i1 = (holdings.get(i));
-
+				// checks available status of i1 to take count of items on loan & their price:
+				boolean available = i1.isAvailable();
+				if (!available) {
+					hireCount++;
+					income += i1.determinePrice();
+				}
 				// display item details:
 				i1.displayItem();
 				System.out.println();
 			}
+			System.out.println(" ------------- S T A T I S T I C S ------------- ");
+			System.out.printf(" | %24s %3d %16s\n", "Inventory count :", holdings.size(), "|");
+			System.out.printf(" | %24s %3d %16s\n", "Total on loan :", hireCount, "|");
+			System.out.printf(" | %24s %3s%5.2f %10s\n", "Forecast income :", "$", income, "|");
+			System.out.println(" ----------------------------------------------- ");
+			System.out.println();
 		} else {
 			System.out.println("No items in list.");
 			mainMenu();
@@ -238,14 +265,27 @@ public class StageD {
 
 	// List all items in holdings - titles & IDs only:
 	private void simpleList() {
+		int hireCount = 0;
+		double income = 0;
 		System.out.println("Item list:");
 		System.out.println(" ---------");
 		for (Item a : holdings) {
 			String title = a.getTitle();
 			int toyID = a.getToyID();
-			System.out.println(toyID + ": " + title);
-		}
+			boolean available = a.isAvailable();
+			String onLoan;
+			if (!available) {
+				onLoan = "ON LOAN";
+				hireCount++;
+				income += a.determinePrice();
+			} else {
+				onLoan = "AVAILABLE";
+			}
+			System.out.printf("%d : %-20s - %-10s\n", toyID, title, onLoan);
+		}		
 		System.out.println(" ---------");
+		System.out.println(" Total hired: " + hireCount);
+		System.out.printf(" Total income: $%.2f\n", income);
 		System.out.println();
 	}
 
@@ -259,15 +299,24 @@ public class StageD {
 		// search array list for a matching object using foreach loop:
 		for (Item i1 : holdings) {
 			if (i1.getToyID() == targetID) {
+				System.out.println();
 				System.out.println("You have selected: " + i1.getTitle());
+				System.out.println();
 				foundit = true;
 				try {
 					System.out.println("Enter customer ID: ");
 					String customerID = sc.nextLine();
-					System.out.println("Enter number of weeks to hire out:");
-					int numWeeks = Integer.parseInt(sc.nextLine());
+					int numWeeks = -1;
+					while (numWeeks < 1) {
+						try {
+							System.out.println("Enter number of weeks to hire out:");
+							numWeeks = Integer.parseInt(sc.nextLine());
+						} catch (IllegalArgumentException e) {
+							System.out.println("Error: # of weeks needs to be an integer > 0.");
+						}
+					}
+
 					i1.hireItem(customerID, numWeeks);
-					System.out.printf("Total price: %.2f \n", i1.determinePrice());
 					System.out.println();
 				} catch (HiringException e) {
 					System.out.println("Item loan failed:");
@@ -298,7 +347,7 @@ public class StageD {
 					i1.returnItem();
 					// Throws Hiring exception and displays message when user tries to return an
 					// item not on loan:
-				} catch (HiringException e) {					
+				} catch (HiringException e) {
 					System.out.println("Item return failed: ");
 					System.out.println(e.getMessage());
 					System.out.println();
@@ -344,35 +393,20 @@ public class StageD {
 				temp = null;
 				tag = fileScanner.nextLine();
 
-				switch (tag) {
-				case "DressUp":
+				if (tag.equals("DressUp")) {
 					temp = new DressUp(fileScanner);
-
-				case "Toy":
+				} else if (tag.equals("Toy")) {
 					temp = new Toy(fileScanner);
-
-				case "PlayEquipment":
+				} else if (tag.equals("PlayEquipment")) {
 					temp = new PlayEquipment(fileScanner);
 				}
 
 				holdings.add(temp);
 
-//				   if (tag.equals("DressUp")) {
-//					   temp = new DressUp(fileScanner);
-//				   }
-//				   else if (tag.equals("Toy")) {
-//						   temp = new Toy(fileScanner);
-//					   }
-//					   else if (tag.equals("PlayEquipment")) {
-//						   temp = new PlayEquipment(fileScanner);
-//					   }
-//				   holdings.add(temp);
-				// accounts[numAccounts] = temp;
-				// numAccounts++;
 			}
+			System.out.println("Data found - loading saved items...");
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found. Starting in default state");
-			// createAccounts(); // creates sample objects
 		}
 	}
 
